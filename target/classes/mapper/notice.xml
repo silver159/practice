@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.dao.noticeDAO">
+	
+		<!-- 공지글 얻어오기 -->
+	<select id="noticeList" parameterType="java.util.HashMap"
+		resultType="com.spring.dto.noticeDTO">
+		select * from tb_notice
+	</select>
+	
+	<!-- 공지 저장 -->
+	<insert id="noticeInsert" parameterType="com.spring.dto.noticeDTO">
+      INSERT INTO tb_notice (name, subject, context, hit)
+         VALUES (#{name}, #{subject}, #{contents}, 0)
+   </insert>
+	
+	<!-- 삭제하기 -->
+	<delete id="deleteNotice" parameterType="java.util.ArrayList">
+	  	DELETE FROM tb_notice where idx in
+	  	<foreach collection="array" item="item" index="index" separator="," open="(" close=")">
+	            #{item}
+	        </foreach> 
+	</delete>
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
