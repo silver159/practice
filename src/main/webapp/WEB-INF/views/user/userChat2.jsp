@@ -72,7 +72,7 @@
 				<div id="messageTextArea" class="chat-container"></div>
 				<!-- 채팅 영역 -->
 				<form class="modal-footer">
-					<input id="textMessage" type="text" onkeydown="return enter(event)">
+					<input id="textMessage" type="text">
 					<input type="button" value="Send" onclick="sendMessage()">
 				</form>
 			</div>
@@ -86,38 +86,21 @@
 	
 		// 모달 띄우기 버튼 클릭
 		document.getElementById('openModalButton').addEventListener(
-				'click',
-				function() {
-					
-					// 모달 띄우기
-					var myModal = new bootstrap.Modal(document
-							.getElementById('questionModal'), {
-						backdrop : 'static', // 배경 클릭시 모달이 닫히지 않도록 설정
-					});
-					// 모달이 열릴 때 웹 소켓 연결
-					myModal.show();
-				    myModal._element.addEventListener('shown.bs.modal', function () {
-				        setupWebSocket();
-				    });
-					
-				 	// Add a keydown event listener to the modal's text input
-				    var textMessageInput = document.getElementById("textMessage");
-				    textMessageInput.addEventListener('keydown', function (event) {
-				        // Check if the pressed key is Enter (key code 13)
-				        if (event.keyCode === 13) {
-				            // Prevent the default action of the Enter key (form submission)
-				            event.preventDefault();
-				            // Stop the event propagation to prevent modal closure
-				            event.stopPropagation();
-
-				            // Call your custom logic here if needed
-				            sendMessage();
-
-				            return false;
-				        }
-				    });
-				    
+			'click',
+			function() {
+				// 모달 띄우기
+				var myModal = new bootstrap.Modal(document.getElementById('questionModal'), {
+					backdrop : 'static', // 배경 클릭시 모달이 닫히지 않도록 설정
 				});
+				// 모달이 열릴 때 웹 소켓 연결
+				myModal.show();
+			    myModal._element.addEventListener('shown.bs.modal', function () {
+			    	if (!webSocket || webSocket.readyState !== WebSocket.OPEN) {
+			            // 소켓이 없거나 연결이 닫혔으면 새로 연결
+			            setupWebSocket();
+			        }
+			    });
+			});
 		
 		// 웹 소켓 설정 함수
 		function setupWebSocket() {
@@ -148,13 +131,12 @@
 		        console.log(message);
 		    };
 
-
-		    // Send 버튼을 누르거나 텍스트 박스에서 엔터를 치면 실행
+			/*
+		    // Send 버튼을 누르면 실행
 		    document.getElementById('sendButton').addEventListener('click', function () {
 		        sendMessage();
 		    });
-			
-
+			*/
 			// 엔터키를 눌렀을 때 폼 제출 막기
 		    textMessageInput.addEventListener('keydown', function (event) {
 		    	 // keyCode 13은 엔터이다.
@@ -169,7 +151,7 @@
 		            return false;
 		        }
 		    });
-		    
+			
 		    // 모달이 닫힐 때 웹 소켓 연결 종료
 		    $('#questionModal').on('hidden.bs.modal', function () {
 		        if (webSocket) {
