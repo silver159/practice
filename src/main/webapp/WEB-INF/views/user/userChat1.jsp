@@ -1,7 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,8 +57,8 @@
 </style>
 </head>
 <body>
-	
-	<img id="openModalButton" src="${pageContext.request.contextPath}/images/chat-icon.png" alt="Click Image" class="img-fluid" data-memberID="${memberID}">
+
+	<img id="openModalButton" src="${pageContext.request.contextPath}/images/chat-icon.png" alt="Click Image" class="img-fluid">
 
 	<!-- 모달 시작 -->
 	<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,11 +83,9 @@
 		
 		// 웹 소켓 객체를 전역으로 선언
 		var webSocket;
-		console.log(webSocket);
-		var memberID = "${memberID}";
 		// 모달 띄우기 버튼 클릭
 		document.getElementById('openModalButton').addEventListener('click',function() {
-			
+					
 			// 모달 띄우기
 			var myModal = new bootstrap.Modal(document.getElementById('questionModal'), {
 				// 배경 클릭시 모달이 닫히지 않도록 설정
@@ -108,10 +103,11 @@
 		            
 		            // 모달이 닫힐 때 이벤트 리스너를 제거
 		            myModal._element.removeEventListener('shown.bs.modal', onModalShown);
-		            
 		        });
 		    }
-		    
+		    // 이전에 추가된 모든 이벤트 리스너를 제거
+		    myModal._element.removeEventListener('shown.bs.modal', showModal);
+
 		    // 모달 띄우기 및 웹 소켓 연결
 		    showModal();
 		});
@@ -131,37 +127,8 @@
 		    // 접속이 완료되면
 		    webSocket.onopen = function (message) {
 		        console.log("WebSocket 연결이 열렸습니다.");
-				console.log(memberID);
-				
-				// 채팅방의 메시지 목록 불러오기
-				$.ajax({
-					url: "${pageContext.request.contextPath}/user/messageList.do",
-					data: {
-						id : "${memberID}"
-					},
-					async: false,
-					dataType: "json",
-					success:function(data) {
-						console.log(data);
-						$.each(data, function(index, item){
-							// 오른쪽 왼쪽 판별
-							CheckLR(index,item);
-						});
-					}
-				});
 		    };
-			
-			// 내가 보낸 것인지, 상대방이 보낸 것인지 확인하기
-			function CheckLR(index,item) {
-				console.log(item.id)
-				// email이 loginSession의 email과 다르면 왼쪽, 같으면 오른쪽
-				const LR = (item.id != "${memberID}") ? "left" : "right";
-			
-				// 메세지 추가
-				displayMessage(item.message, LR);		
-			}
-		    
-		    
+
 		    // 에러가 발생하면
 		    webSocket.onerror = function (message) {
 		        console.log("error...");
@@ -171,8 +138,7 @@
 		    webSocket.onmessage = function (message) {
 		        displayMessage(message.data, "left");
 		    };
-			
-		    
+
 			// 엔터키를 눌렀을 때 폼 제출 막기
 		    textMessageInput.addEventListener('keydown', function (event) {
 		    	 // keyCode 13은 엔터이다.
@@ -189,25 +155,21 @@
 			
 		    // 모달이 닫힐 때 웹 소켓 연결 종료
 		    $('#questionModal').on('hidden.bs.modal', function () {
-		    	if (webSocket) {
+		        if (webSocket) {
 		            webSocket.close();
 		        }
 		    });
-			
 		}
 
 		// 서버로 메시지를 발송하는 함수
 		function sendMessage() {
 		    // 텍스트 박스의 객체를 가져옴
 		    let message = document.getElementById("textMessage");
-		    if(message.value.trim() != ''){
-			    console.log(message.value);
-			    // 화면에 메세지를 남긴다.
-			    displayMessage(message.value, "right");
-			    // 소켓으로 보낸다.
-			    webSocket.send(message.value);
-			    // 텍스트 박스 초기화
-		    }
+		    // 화면에 메세지를 남긴다.
+		    displayMessage(message.value, "right");
+		    // 소켓으로 보낸다.
+		    webSocket.send(message.value);
+		    // 텍스트 박스 초기화
 		    message.value = "";
 		}
 
