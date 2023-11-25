@@ -1,5 +1,5 @@
 # pratice
-두번째 프로젝트 - 렌터카 프로젝트
+렌터카 프로젝트
 
 ![개발환경_1](https://github.com/silver159/pratice/assets/125272016/6cfdc053-b8de-4221-9f99-2d273a22d7c6)
 
