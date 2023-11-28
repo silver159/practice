@@ -19,11 +19,13 @@ public interface RentalDAO {
 
 	ArrayList<RentalDTO> getRentalList();
 
-	void rentalInsert(CarParam carParam);
+	void rentalInsert(Map<String, Object> data);
 
-	void carUpdate(CarDTO carDTO);
-
-	int income(String period);
+	Integer income(Map<String, Object> data);
 
 	List<Map<String, Integer>> incomeList();
+
+	ArrayList<RentalDTO> rentListMonth(Map<String, Object> data);
+
+	
 }

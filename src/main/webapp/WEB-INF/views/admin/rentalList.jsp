@@ -30,7 +30,31 @@
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery-3.7.0.js"></script> 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script type="text/javascript" src="<%= request.getContextPath()%>/js/adminRentalList.js"></script> 
+	
+	<!-- date picker -->
+	
+	<style type="text/css">
 		
+		#dropdown-m {
+			width: 240px;
+		}
+		#dropdown-y {
+			width: 160px;
+		}
+		#item-months, item-years {
+			width: 240px;
+		}
+		#item-months > span {
+			width: 60px;
+		}
+		#item-years > span:nth-child(odd) {
+			width: 60px;
+		}
+		#item-years > span:nth-child(2) {
+			width: 120px;
+		}
+	
+	</style>
 </head>
 <body id="page-top">
     <div class="d-flex" id="wrapper">
@@ -53,102 +77,72 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-					<!-- 상단 4 -->
-                    <div class="row mb-4">
-						<!-- YearlyIncome -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs text-success mb-1">연 매출</div>
-                                            <h5 id="yearlyIncome" class="mb-0"></h5>
-                                        </div>	
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- MonthlyIncome -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs text-primary mb-1">매출 (월별)</div>
-                                            <h5 id="monthlyIncome" class="mb-0"></h5>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
- 
-
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">작업
-                                            </div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                보류 중인 요청</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
+					<!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-5">
+                        <h3 class="mb-0 text-gray-800">Dashboard</h3>
                     </div>
-					<!-- 상단 4 끝 -->
 					
+                    <div class="row mb-4">
+						<div class="text-center fs-3 mb-4">
+							랜트 차량 리스트
+						</div>
+						<h3 id="rental_title" class="text-center fs-5">전체매출</h3>
+                    </div>
 					
 					<!-- 차량 리스트 -->
-
-
-                    <div class="row my-5" style="padding-bottom: 200px;">
-                    
-						<div class="col-lg-12 text-center fs-3 mb-3">
-							출고 된 차량 리스트
+                    <div class="row my-4" style="padding-bottom: 200px;">
+                    	<div class="col-6 mb-3">
+							<ul class="nav mb-2 mb-lg-0 ">
+								<!-- 년별 -->
+								<li class="nav-item dropdown mr-2">
+									<input id="dropdown-y" class="dropdown btn btn-outline-secondary" type="button" value="년도별 보기" data-bs-toggle="dropdown"/>
+									<ul id="menu-y" class="dropdown-menu">
+										<li class="dropdown-item"></li>
+										<li class="dropdown-item"></li>
+										<li class="dropdown-item"></li>
+										<li class="dropdown-item"></li>
+										<li class="dropdown-item"></li>
+									</ul>
+								</li>
+								<!-- 월별 -->
+								<li class="nav-item dropdown">
+									<input id="dropdown-m" class="btn btn-outline-secondary" type="button" value="월별보기"/>
+									<div id="menu-m" class="dropdown-menu">
+										<div id="item-years" class="d-flex flex-wrap text-center">
+											<span class="dropdown-item"><i class="bi bi-chevron-left"></i></span>
+											<span id="year-text" class="align-self-center"></span>
+											<span class="dropdown-item"><i class="bi bi-chevron-right"></i></span>
+										</div>
+										<div id="item-months" class="d-flex flex-wrap text-right">
+											<span class="dropdown-item">1월</span>
+											<span class="dropdown-item">2월</span>
+											<span class="dropdown-item">3월</span>
+											<span class="dropdown-item">4월</span>
+											<span class="dropdown-item">5월</span>
+											<span class="dropdown-item">6월</span>
+											<span class="dropdown-item">7월</span>
+											<span class="dropdown-item">8월</span>
+											<span class="dropdown-item">9월</span>
+											<span class="dropdown-item">10월</span>
+											<span class="dropdown-item">11월</span>
+											<span class="dropdown-item">12월</span>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-6">
+							<div class="d-flex">
+							
+								<div class="input-group mb-3">
+									<span class="input-group-text">차종 별</span>
+									<select class="car_type form-control text-center mr-2"></select>
+								</div>
+								<div class="input-group mb-3">
+										<span class="input-group-text">브랜드 별</span>
+									<select class="car_maker form-control text-center mr-2"></select>
+								</div>
+							</div>
 						</div>
                     	<div class="col-lg-12">
 	                    	<table class="table table-striped table-hover">
@@ -157,45 +151,70 @@
 				            			<th><input type="checkbox" id="allCheck"/></th>
 				            			<th>차량번호</th>
 				            			<th>브랜드</th>
-				            			<th>모델</th>
-				            			<th>시리즈</th>
+				            			<th>차량</th>
+				            			<th>차종</th>
+				            			
 				            			<th>대여일자</th>
 				            			<th>반납일자</th>
-
+				            			<th>대여일수</th>
 				            			<th>1일대여 요금</th>
 				            			<th>총 대여비용</th>
 				            		</tr>
 				            	</thead>
-				            	<tbody class="table-group-divider">
+				            	<tbody id="list-item" class="table-group-divider">
 				            		<c:forEach var="list" items="${rentalList}">
-				            		<tr class="text-center list-item">
+				            		<tr class="text-center">
 				            			<td><input type="checkbox" class="check" value="${list.car_idx}"/></td>
 				            			<td>${list.carNumber}</td>
-				            			<td>${list.maker}</td>
-										<td>${list.model}</td>
-				            			<td>${list.series}</td>
+				            			<td class="${list.maker}">${list.maker}</td>
+										<td>${list.model} ${list.series}</td>
+				            			<td class="${list.type}">${list.type}</td>
 
 				            			<td><fmt:formatDate value="${list.rentalDate}" pattern="yy년 MM월 dd일"/></td>
 				            			<td><fmt:formatDate value="${list.dueDate}" pattern="yy년 MM월 dd일"/></td>
+										<fmt:parseNumber value="${((list.dueDate).time - (list.rentalDate).time) / (1000*60*60*24)}" var="dueDateFmt" pattern="#"/>
+										<td>${dueDateFmt}일</td>
 
 				            			<td><fmt:formatNumber value="${list.dayCost}" pattern=",000원"/></td>
 				            			<td><fmt:formatNumber value="${list.cost}"    pattern=",000원"/></td>
 				            		</tr>
 				            		</c:forEach>
 				            	</tbody>
+<!-- 				            	<tbody>
+				            		<tr class="text-center table">
+				            			<td colspan="9" class=""></td>
+				            			<td id="total_cost" colspan="1" class="total_cost">총매출얼마</td>
+				            		</tr>
+				            	</tbody>
+ -->
 				            </table>
                     	</div>
-                    	<div class="col-lg-12 text-right">
+			            <div class="col-8"></div>
+			            <div class="col-4">
+							<div class="d-flex">
+						
+								<div class="input-group mb-3">
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text">매출</span>
+									<span id="total_cost" class="form-control text-center"></span>
+								</div>
+								
+							</div>
+			            </div>
+<!--                     	<div class="col-lg-12 text-right">
                     		<input id="show_modal" class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal" value="모달창"/>
                     	</div>
-                    </div>	
+ -->
+                    </div>
+
+		            </div>
 	            </div>
 	        </div>
 	    </div>
 	</div>
 </div>
 	<!-- bootstrap 모달 -->
-
 	<!-- Button trigger modal -->
 	
 	
@@ -322,15 +341,6 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-
-<!-- 디졋다  -->
-<script type="text/javascript">
-
-
-
-</script>
-
 
 
     <!-- Bootstrap core JavaScript-->

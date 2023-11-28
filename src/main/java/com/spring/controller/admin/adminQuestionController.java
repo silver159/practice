@@ -94,4 +94,22 @@ public class adminQuestionController {
 		return map;
 	}
 	
+//	처리되지않은 요청의 갯수(Main)
+	@RequestMapping(value = "/adminQuestion/unfinishedCount", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> repleSelect() {
+		logger.info("adminQuestionController의 unfinishedCount()");
+		
+		
+		int unfinishedCount = service.unfinishedCount();
+		
+		System.out.println(unfinishedCount);
+
+		Map<String, String> map = new HashMap<String, String>();
+        map.put("result", "success");
+        map.put("unfinishedCount", Integer.toString(unfinishedCount));
+        
+		return map;
+	}
+	
 }

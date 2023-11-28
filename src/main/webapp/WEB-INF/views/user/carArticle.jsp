@@ -14,26 +14,63 @@
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
     <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <!-- Simple line icons-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery-3.7.0.js"></script> 
 	<link rel="stylesheet"  href="../css/styles_main.css"/>
     <link rel="stylesheet" href="../css/style_index.css"/>
-    <style type="text/css">
     
-     #rental-box {
-     	width: 450px;
-    	border: 1px solid gray;
-    	top: 200px;
-    	right: 30px;
-     }
-	.rental-box rental-time {
-    	border: none;
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/carArticle.js"></script>
+    <style type="text/css">
+
+
+	#rental_schedule {
+	}
+
+	.img_wrap img {
+		height: 300px;
+	}
+	.name_wrap img {
+		width: 120px;
+		height: 120px;
+	}
+	.detail_wrap span {
+		font-size: 0.8rem;
+	}
+	.detail_wrap strong {
+		font-size: 1.3rem;
+	}
+
+    
+/* rental-box */
+    #rental-box {
+    	width: 100%;
     }
     
-     
+	#rental-box .row {
+		padding: 10px 0;
+		border: 1px solid black;
+	
+	}
+	#rental-box .row:first-child {
+		border-top-left-radius: 10px; 
+		border-top-right-radius: 10px;
+		cursor: pointer;
+	}
+	#rental-box #rental_schedule {
+		border-top-left-radius: 10px; 
+		border-top-right-radius: 10px;
+		padding-bottom: 0;
+	}
+	#rental-box .row:last-child {
+		border-bottom-left-radius: 10px; 
+		border-bottom-right-radius: 10px;
+		cursor: pointer;
+	}
+    
    	.map #map {
 	  /* pointer-events: none; */
 	  height: 100%;
@@ -68,281 +105,136 @@
 	.masthead {
    	  height: 100vh;
   	}
-   </style>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery-3.7.0.js"></script> 
+   	</style>
+    
 
 </head>
 <body>
-	<!-- Navigation-->
-    <a class="menu-toggle rounded" href="#"><i class="fas fa-bars"></i></a>
-    <nav id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-			<li class="sidebar-brand">
-            	<c:choose>
-				    <c:when test="${sessionScope.memberName == null}">
-				    	<a class="menu_title" href="<%= request.getContextPath() %>/login/login.do">로그인</a>
-				    </c:when>
-				    <c:otherwise>
-				    	<a href="<%=request.getContextPath()%>/member/info.do">${sessionScope.memberName} 님</a>
-				    	&nbsp;&nbsp;
-				    	<a href="<%=request.getContextPath()%>/login/logout.do"><i class="bi bi-box-arrow-right"></i></a>
-				    </c:otherwise>
-				</c:choose>
-            </li>        
-            <li class="sidebar-nav-item"><a href="#main">홈으로</a></li>
-            <li class="sidebar-nav-item"><a href="<%= request.getContextPath()%>/login/register.do">임시 회원가입</a></li>
-            <li class="sidebar-nav-item"><a href="#services">몰루</a></li>
-            <li class="sidebar-nav-item"><a href="#promotion">어디루</a></li>
-            <li class="sidebar-nav-item"><a href="<%= request.getContextPath()%>/rental/rentalPage">랜트카 조회하기</a></li>
-		</ul>
-    </nav>
-    <a class="scroll-to-top rounded" href="#main"><i class="fas fa-angle-up"></i></a>
-    저는 차 1건을 보는 페이지입니다.
-	
 
-	<div class="car-box">
-		<div class="p-3 d-flex">
-			<div>
-				<%-- <img src="upload/maker/${car.maker}" alt="maker 사진"/> --%>
-				<h4>${car.maker}</h4>
-				<h3 id="model">${car.model}</h3>
+	<div class="container">
+		<div class="row">
+			<!-- 메인 contents -->
+			<div class="col-lg-8 mr-4">
+			
+				<div class="contents">
+					<div class="title_wrap my-3">
+						<h2>차량상세</h2>
+					</div>
+					<div class="img_wrap mb-3">
+						<img class="rounded mx-auto d-block"
+							src="/upload/${car.image}"/>
+					</div>
+					<div class="name_wrap d-flex">
+						<img src="<%= request.getContextPath()%>/images/logo/${car.maker}.png"/>
+						<div class="align-self-center">
+							<div class="fs-4">${car.maker} <strong>${car.model}</strong></div>
+							<div class="fs-5">${car.model}${car.series}</div>
+						</div>
+					</div>
+					<div class="detail_wrap row gx-5 mb-3">
+						<div class="col border p-3 mx-3 bg-light">
+							<i class="bi bi-car-front-fill"></i><br/>
+							<span>
+								연료<br/>
+								<strong>${car.year}</strong>년식
+							</span>
+							
+						</div>
+						
+						<div class="col border p-3 mx-3 bg-light">
+							<i class="bi bi-people-fill"></i><br/>
+							<span>
+								승차인원<br/>
+								<strong>${car.seatCount}</strong>인승
+							</span>
+							
+						</div>
+						
+						<div class="col border p-3 mx-3 bg-light">
+							<i class="bi bi-droplet-fill"></i><br/>
+							<span>
+								연료<br/>
+								<strong>${car.fuel}</strong>
+							</span>
+						</div>
+						
+						<div class="col border p-3 mx-3 bg-light">
+							<i class="bi bi-fuel-pump-fill"></i><br/>
+							<span>
+								연비<br/>
+								<strong>${car.fuelRatio}</strong>
+							</span>
+						</div>
+					</div>
+					<!-- 차이름 가격 및 예약버튼  -->
+				</div>
+				
+				
 			</div>
-			<div class="position-relative">
-				<img class=""
-					src="<%= request.getContextPath()%>/images/car.png"
-					width="300px"/>
+			<!-- 사이드바 -->
+			<div class="col-lg-4">
+				
+				<div id="rental-box" class="p-3 fs-5">
+				
+					<div id="rental_day" class="row">
+						<div class="d-flex justify-content-between">
+							<div>
+								<i class="bi bi-alarm"></i>
+								<span id="date_result">
+									${rentalDate} ~ ${dueDate}
+								</span>
+							</div>
+							<span class="text-end align-self-center fs-6" style="text-decoration: underline;">수정</span>
+						</div>
+					</div>
+
+					<div id="rental_schedule" class="row" style="display: none;">
+						<div class="col-12 text-center mb-3">
+							대여<input id="rental_start" class="form-control" type="date" name="rentalDate" min="${rentalDate}" value="${rentalDate}">
+						</div>
+						<div class="col-12 text-center mb-3">
+							반납<input id="rental_end" class="form-control" type="date" name="dueDate" min="${dueDate}" value="${dueDate}">
+						</div>
+						<div class="col-12" style="background-color: gray; color: white; cursor: pointer; ">
+							<div id="schedule_select" class="text-center m-2">일정 선택완료</div>
+						</div>
+					</div>
+
+					<div class="row">	
+						<span><i class="bi bi-bell"></i> ${car.model} ${car.series}</span>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							1일 대여 요금
+						</div>
+						<div id="day_cost" class="col-6 text-end">
+							${car.dayCost}원
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							총 요금
+						</div>
+						<div id="total_cost" class="col-6 text-end">
+							${car.dayCost}원
+						</div>
+					</div>
+					<div class="row">
+						<div id="data"
+							data-car_idx="${car.car_idx}"
+							data-rental_date="${rentalDate}"
+							data-due_date="${dueDate}"
+							class="m-3 text-center">예약하기</div>
+					</div>
+					
+				</div>
+					
 			</div>
-		</div>
-		<!-- 차이름 가격 및 예약버튼  -->
-		<div>
-			<p>${car.model} ${car.series}</p>
-			<span>${car.year}년식 · ${car.seatCount}인승</span>
-		</div>
-		<div>
-			${car.dayCost}
 		</div>
 	</div>
-	<div id="rental-box" class="form-control p-1">
-		<table class="table-bordered form-control">
-			<tr class="rental_day">
-				<td colspan="2">
-					<i class="bi bi-clock"></i> <span id="date_result">${rentalDate} ~ ${dueDate}</span>
- 				</td>
-			</tr>
-			<tr class="rental_schedule" hidden="hidden">
-				<td colspan="1">
-					대여 : <input id="rental_start" class="form-control" type="date" name="rentalDate" min="${rentalDate}" value="${rentalDate}">
- 				</td>
-				<td colspan="1">
-					반납 : <input id="rental_end" class="form-control" type="date" name="dueDate" min="${dueDate}" value="${dueDate}">
- 				</td>
- 			</tr>
- 			<tr class="rental_schedule" hidden="hidden">
-				<td colspan="2">
-					<div class="text-center m-2 schedule_select">일정 선택완료</div>
- 				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<i class="bi bi-bell"></i>${car.model} ${car.series}
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					1일 대여 요금 <br/>
-					${car.dayCost}원
-				</td>
-			</tr>
-			<tr>	
-				<td colspan="2" id="cost_result">
-					<div id="data" style="width: 380px;"
-						data-car_idx="${car.car_idx}"
-						data-rental_date="${rentalDate}"
-						data-due_date="${dueDate}"
-						class="m-3 text-center">${car.dayCost}원로 예약하기</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+	
 	
 	<script type="text/javascript">
-	$(() => {
-		
-		/* 날짜창 띄우기 (날짜 클릭)*/
-		$('.rental_day').click(() => {
-			$('.rental_schedule').removeAttr('hidden');
-			$('.rental_day').attr('hidden', 'hidden');
-		});
-		
-		/* 결과창 띄우기 (일정선택완료 클릭)*/
-		$('.schedule_select').click(() => {
-			
-			/* 결과창 내용 변경 코드 필요*/
-			const rentalDateStr = $('input[name=rentalDate]').val();
-			const dueDateStr = $('input[name=dueDate]').val();
-			
-			const result = rentalDateStr+ '~' +dueDateStr;
-			$('#date_result').html(result);
-			
-			/* 빌린 일수와 1일 대여요금 계산 */
-			var rentalDate = new Date(rentalDateStr);
-			var dueDate = new Date(dueDateStr);
-			
-			var milliseconds = dueDate - rentalDate;
-			
-			var count = ( milliseconds / 86400000 );
-			
-			const data = $('#data');
-			
-			data.attr('data-rental_date', rentalDateStr);
-			data.attr('data-due_date', dueDateStr);
-			
-			
-			
-			data.html(count * ${car.dayCost} + "원로 예약하기");
-			
-			$('.rental_schedule').attr('hidden', 'hidden');
-			$('.rental_day').removeAttr('hidden');
-		});
-		
-		/* 대여일 값 변경 시 반납일 조정 함수*/
-		$('#rental_start').change(context => {
-			var target = $(context.target);
-			var dueDateObj = $('#rental_end');
-			
-			
-			var rentalDate = new Date(target.val());
-			rentalDate.setDate(rentalDate.getDate() + 1);
-			var dueDate = rentalDate;
-			var dueDateString = formatDate(dueDate, 'yyyy-MM-dd');
-
-			// 입련되어 있던 값으로 날짜 크기 비교
-			var rentalDate = new Date(target.val());
-			var dueDate = new Date(dueDateObj.val());
-			
-			console.log(dueDate, rentalDate);
-			console.log(dueDateString);
-			
-			if(rentalDate >= dueDate){
-				console.log('대여일이 크다.')
-				dueDateObj.attr('min', dueDateString);
-				dueDateObj.val(dueDateString);
-			} else {
-				console.log('반압일이 크다.')
-				dueDateObj.attr('min', dueDateString);
-			}
-
-		});
-		// simpleFomatDate 메소드
-		const formatDate = (date, pattern) => {
-
-			if(pattern ==  'yyyy-MM-dd'){
-				const year = date.getFullYear();
-				const month = String(date.getMonth() + 1).padStart(2, '0');
-				const day = String(date.getDate()).padStart(2, '0');
-				const fomatDate = year+ '-' +month+ '-' +day;
-				return fomatDate;
-			} else if(pattern == 'MM.dd(E)'){
-				const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
-				const month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1
-				const day = date.getDate();
-				const dayOfWeek = date.getDay(); // 요일은 0(일요일)부터 6(토요일)까지
-				
-				// 월과 일이 한 자리 수인 경우 두 자리 수로 변경
-				const formatMonth = month < 10 ? `0${month}` : month;
-				const formatDay = day < 10 ? `0${day}` : day;
-				
-				const fomatDate = `${formattedMonth}.${formattedDay}.(${daysOfWeek[dayOfWeek]})`;
-				
-				return fomatDate;
-			}
-		}
-		
-	});
-
-		
-	
-	
-	/* 결제하기 */
-	$('#data').click(context => {
-
-		var tdElement = document.getElementById("total");
-		var totalCost = tdElement.textContent;
-		totalCost = `Cost.replace("원", "");
-		var tc = parseFloat(totalCost);
-
-		function execute() {
-			var is = confirm("예약하는거 확실해?");
-			
-			if(!is) {
-				return;
-			}
-			
-			var target = $(context.target);
-		    var car_idx = target.data('car_idx');
-		    var rentalDate_str = target.data('rental_date');
-		    var dueDate_str = target.data('due_date');
-		    
-		    
-		    var data = {
-	    		car_idx: car_idx,
-	    		rentalDateStr: rentalDate_str,
-	    		dueDateStr: dueDate_str
-			};
-			
-		    console.log(data);
-		    
-		    
-		    var url = "/test/rental/rental";
-		    
-		    fetch(url, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-			})
-			.then(response => {
-				return response.json();
-			})
-			.then(json => {
-				if(json.result == "success") {
-					window.location= '<%= request.getContextPath() %>/';
-				}
-			})
-		}
-		var IMP = window.IMP; // 생략 가능
-	    IMP.init("imp10626336");
-        IMP.request_pay({
-            pg: 'html5_inicis',
-            pay_method: 'card',
-            merchant_uid: 'merchant_' + new Date().getTime(),
-            name: '고대일',
-            amount: tc,
-            buyer_email: 'ktym14452@naver.com',
-            buyer_name: '${sessionScope.memberName}',
-            buyer_tel: '010-2563-1675',
-            buyer_addr: 'addr',
-            buyer_postcode: '123-456'
-        }, function (data) {
-            if (data.success) {
-                var msg = "결제 완료";
-                msg += '고유ID : ' + data.imp_uid;
-                msg += '// 상점 거래ID : ' + data.merchant_uid;
-                msg += '// 결제 금액 : ' + data.paid_amount;
-                msg += '// 카드 승인번호 : ' + data.apply_num;
-                execute();
-                
-            } else {
-                var msg = "결제 실패: " + data.error_msg;
-                alert(msg);
-                window.location.reload();
-            }
-        });
-		
-		
-		
-	});
 			
 	</script>
     <script src="../js/scripts_main.js"></script>	

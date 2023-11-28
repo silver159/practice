@@ -3,8 +3,7 @@
 <mapper namespace="com.spring.dao.noticeDAO">
 	
 		<!-- 공지글 얻어오기 -->
-	<select id="noticeList" parameterType="java.util.HashMap"
-		resultType="com.spring.dto.noticeDTO">
+	<select id="noticeList" parameterType="java.util.HashMap" resultType="com.spring.dto.noticeDTO">
 		select * from tb_notice
 	</select>
 	

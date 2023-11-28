@@ -1,5 +1,10 @@
 $(() => {
 	
+//	console.log('gd');
+//	var carList_json = $('#data-container').data('carlist_json');
+//	console.log(carList_json);
+//	console.log(JSON.parse(carList_json));
+	
 	/* 전체 옵션 선택시 */
 	$('#chk_all').click(() => {
 		var all = $('#chk_all').prop('checked');
@@ -62,7 +67,7 @@ $(() => {
 			data.type.push(...sm, ...big);
 			data.seatCount.push(...five, ...five_over);
 		}
-		console.log(data);
+		console.log("data", data);
 
 		const url = "/test/car/search";
 		// 데이터 조회

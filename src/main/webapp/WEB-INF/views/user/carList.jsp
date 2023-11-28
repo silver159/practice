@@ -75,7 +75,6 @@
     	  height: 100vh;
 	  	}
     </style>
-    <script type="text/javascript" src="<%= request.getContextPath()%>/js/jquery-3.7.0.js"></script> 
 
 </head>
 <body>
@@ -103,7 +102,9 @@
         </ul>
     </nav>
     <a class="scroll-to-top rounded" href="#main"><i class="fas fa-angle-up"></i></a>
+    
     저는 carList 페이지입니다.
+    
     <div class="row">
     	<div class="col-md-3 col-sm-12">
     	</div>
@@ -170,12 +171,43 @@
 		<input name="rentalDateStr"/>
 		<input name="dueDateStr"/>
 	</form>
-	
+	<div id="data-container" data-carlist_json="${carList_json}"></div>
 	
 	
 <script type="text/javascript">
+	const carList = ${carList_json};
+	const list = carList.list;
+	
+	
+	var carBox = '';
+	
+	var nextSame = false;
+	
+	
+	for(var i = 0; i < list.length; i ++) {
+		var car = list[i];
+		
+		carBox += nextSame ? onlydata(car) : open(car);
+		console.log(carBox);
+		if(i != list.length - 1){
+			
+			if(list[i].model == list[i+1].model){
+				//같다.
+				nextSame = true;
+			}else {
+				// 다르다. 닫아준다.
+				nextSame = false;
+				carBox += close();
+			}
+		}
+	}
+	
+	carBox += close();
+	console.log(carBox);
+	$('#carListContainer').html(carBox);
+	
 	/* 차 한건에 대한 예약하기 버튼 클릭시 예약 페이지로 넘어가기*/
-	const reservation = (car_idx) => {
+	const reservation = car_idx => {
 		var userID = "${memberID}";
 		
 		if(userID == ''){
@@ -191,7 +223,7 @@
 		}
 		
 	};
-	
+    
 </script>
 	
     <script src="../js/scripts_main.js"></script>	

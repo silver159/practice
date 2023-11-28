@@ -103,4 +103,10 @@ public class questionService {
 		}
 		
 	}
+	
+	public int unfinishedCount() {
+		logger.info("questionService");
+
+		return dao.unfinishedCount();
+	}
 }

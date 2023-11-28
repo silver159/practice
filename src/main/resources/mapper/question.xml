@@ -103,6 +103,12 @@
 		
 	</select>
 	
+	<!-- 미확인, 처리중인 문의사항 갯수 ( main ) -->
+	<select id="unfinishedCount" resultType="int">
+		SELECT COUNT(*) FROM tb_question
+			WHERE answer IN ('미확인', '처리중')
+	</select>
+	
 	
 </mapper>
 

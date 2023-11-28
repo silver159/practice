@@ -23,6 +23,7 @@ import com.spring.dto.CarList;
 import com.spring.dto.CarParam;
 import com.spring.dto.RentalDTO;
 import com.spring.dto.memberDTO;
+import com.spring.service.CarService;
 import com.spring.service.RentalService;
 
 @Controller
@@ -33,6 +34,9 @@ public class RentalController {
 	
 	@Autowired 
 	RentalService service;
+	
+	@Autowired 
+	CarService carService;
 	
 	@Autowired
 	CarList carList;
@@ -45,16 +49,17 @@ public class RentalController {
 
 	@RequestMapping(value = "/rental/rental", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> rental(Model model, HttpSession session, @RequestBody CarParam carParam) {
+	public Map<String, String> rental(Model model, HttpSession session, @RequestBody Map<String, Object> data) {
 		System.out.println("Rental의 rental");
 		
 		String memberID = (String) session.getAttribute("memberID");
+		System.out.println(memberID);
+		data.put("memberID", memberID);
 		
-		carParam.dateFormat();
 //		차량 출고로 변경
-		service.carUpdate(carParam.getCar_idx(), "출고", memberID);
+		carService.carUpdate((int) data.get("car_idx"), "출고");
 		
-		service.rentalInsert(carParam);
+		service.rentalInsert(data);
 		
 		
 		Map<String, String> map = new HashMap<String, String>();

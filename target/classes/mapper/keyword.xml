@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.dao.KeywordDAO">
+
+	<select id="keywordOpstion">
+		select name from tb_keyword
+	</select>
+	
+	<insert id="keywordInsert" parameterType="hashmap">
+		INSERT INTO tb_carkeyword(carinfo_idx, keyword_idx)
+			VALUES
+			<foreach collection="name" item="item" separator=",">
+				
+				(#{carinfo_idx} , (SELECT keyword_idx FROM tb_keyword WHERE NAME = #{item}))
+			
+			</foreach>
+	
+	</insert>
+	
+	<select id="getkeywordList" parameterType="String" resultType="com.spring.dto.CarDTO">
+		SELECT * FROM tb_car car
+		    JOIN tb_carinfo info
+				ON car.carinfo_idx = info.carinfo_idx
+		    JOIN tb_carkeyword mm
+				ON mm.carinfo_idx = info.carinfo_idx
+		    JOIN tb_keyword keyword
+				ON keyword.keyword_idx = mm.keyword_idx
+		    WHERE keyword.name=#{name};
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

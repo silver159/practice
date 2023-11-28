@@ -9,7 +9,7 @@ public class CarDTO extends CarInfoDTO {
 	private String year;
 	private int dayCost;
 	private String status = "입고";		// 입고 출고 정비
-	private int rentalCount;					// rental count
+	private int rentalCount;			// rental count
 	
 	public int getCar_idx() {
 		return car_idx;

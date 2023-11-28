@@ -42,7 +42,19 @@ public class adminCarController {
 	CarList carList;
 	@Autowired
 	CarInfoList infoList;	
+	@RequestMapping(value = "/admin/carUpdate", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> carUpdate(@RequestBody HashMap<String, Object> data) {
+		System.out.println("adminCar의 carUpdate");
+		
+		service.adminCarUpdate(data);
 
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("result", "success");
+		
+		return map;
+	}
+	
 //	Car 삭제
 	@RequestMapping(value = "/admin/carDelete", method = RequestMethod.POST)
 	@ResponseBody
@@ -141,6 +153,30 @@ public class adminCarController {
 		return map;
 	}
 	
+//	렌트 Type Maker 조회 ( option list )
+	@RequestMapping(value = "/admin/car/typeOption", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> typeOption() {
+		System.out.println("adminCar의 typeOption");
+		
+		List<String> typeList = service.getTypeList();
+		List<String> makerList = service.getMakerList();
+		
+		System.out.println(typeList);
+		System.out.println(makerList);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			String typeListString  = objectMapper.writeValueAsString(typeList);
+			String makerListString = objectMapper.writeValueAsString(makerList);
+			map.put("result", "success");
+			map.put("typeList", typeListString);
+			map.put("makerList", makerListString);
+		} catch (Exception e) { }
+		
+		return map;
+	}
 	
 	
 	
@@ -149,7 +185,7 @@ public class adminCarController {
 //	carInfo insert
 	@RequestMapping(value = "admin/infoInsert", method = RequestMethod.POST)
 	public void infoInsert(MultipartHttpServletRequest request, Model model, CarInfoDTO carInfoDTO) {
-		System.out.println("adminRental의 infoInsert");
+		System.out.println("adminCar의 infoInsert");
 		System.out.println(carInfoDTO);
 		
 		

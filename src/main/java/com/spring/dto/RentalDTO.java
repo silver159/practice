@@ -1,6 +1,6 @@
 package com.spring.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class RentalDTO extends CarDTO {
 	

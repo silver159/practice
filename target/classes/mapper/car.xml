@@ -8,22 +8,17 @@
 			GROUP BY STATUS
 	</select>
 	
+	<select id="getTypeList">
+		SELECT DISTINCT info.type
+			FROM tb_carinfo info
+			ORDER BY info.type
+	</select>
 	
-	
-	
-	<!-- info insert -->
-	<insert id="carinfoInsert" parameterType="com.spring.dto.CarInfoDTO">
-		INSERT INTO tb_carinfo
-			(maker, model, series, type, transmission, fuel, fuelRatio, image, seatCount)
-					VALUES(#{maker}, #{model}, #{series}, #{type}, #{transmission}, #{fuel}, #{fuelRatio}, #{image}, #{seatCount})
-	</insert>
-	
-	<!-- car insert -->
-	<insert id="carInsert" parameterType="com.spring.dto.CarDTO">
-		INSERT INTO tb_car (carInfo_idx, carNumber, year, dayCost, status)
-			VALUES(#{carInfo_idx}, #{carNumber}, #{year}, #{dayCost}, '입고')
-	</insert>
-	
+	<select id="getMakerList">
+		SELECT DISTINCT info.maker
+			FROM tb_carinfo info
+			ORDER BY info.maker
+	</select>
 	
 	<!-- 메인 검색 요청 -->
 	<select id="mainSearchCar" parameterType="com.spring.dto.CarParam" resultType="com.spring.dto.CarDTO">
@@ -57,6 +52,18 @@
 			    </choose>
 			</if>
 			ORDER BY info.maker, info.model
+	</select>
+	
+	<!-- 키워드 별 차량 검색 -->
+	<select id="keywordSearch" parameterType="String">
+		SELECT * FROM tb_car car
+		    JOIN tb_carinfo info
+				ON car.carinfo_idx = info.carinfo_idx
+		    JOIN tb_carkeyword mm
+				ON mm.carinfo_idx = info.carinfo_idx
+		    JOIN tb_keyword keyword
+				ON keyword.keyword_idx = mm.keyword_idx
+	    	WHERE keyword.name= #{keyword}
 	</select>
 	
 	
@@ -99,6 +106,34 @@
 		    WHERE car_idx = #{car_idx}
 	</select>
 	
+	<!-- info insert -->
+	<insert id="carinfoInsert" parameterType="com.spring.dto.CarInfoDTO">
+		INSERT INTO tb_carinfo
+			(maker, model, series, type, transmission, fuel, fuelRatio, image, seatCount)
+					VALUES(#{maker}, #{model}, #{series}, #{type}, #{transmission}, #{fuel}, #{fuelRatio}, #{image}, #{seatCount})
+	</insert>
+	
+	<!-- car insert -->
+	<insert id="carInsert" parameterType="com.spring.dto.CarDTO">
+		INSERT INTO tb_car (carInfo_idx, carNumber, year, dayCost, status)
+			VALUES(#{carInfo_idx}, #{carNumber}, #{year}, #{dayCost}, '입고')
+	</insert>
+
+	<!-- 차량 상태 업데이트 -->
+	<update id="carUpdate">
+		UPDATE tb_car
+			SET status = #{status}
+			WHERE car_idx = #{car_idx}
+	</update>
+	<!-- 차량 상태 업데이트 -->
+	<update id="adminCarUpdate" parameterType="java.util.HashMap">
+		UPDATE tb_car
+			SET status = '입고'
+			WHERE car_idx IN
+			<foreach collection="car_idx" item="item" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+	</update>
 	
 	<!-- 차 정보 삭제 -->
 	<delete id="carDelete" parameterType="java.util.HashMap">

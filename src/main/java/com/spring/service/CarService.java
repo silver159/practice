@@ -51,8 +51,8 @@ public class CarService {
 	
 	public void carDelete(HashMap<String, Object> data) {
 		dao.carDelete(data);
-		
 	}
+	
 	public ArrayList<CarDTO> getlist() {
 		System.out.println("AdminRentalService의 getlist");
 		
@@ -84,6 +84,31 @@ public class CarService {
 	public List<Map<String, Integer>> statusCount() {
 		
 		return dao.statusCount();
+	}
+
+	public List<String> getTypeList() {
+		return dao.getTypeList();
+	}
+
+	public List<String> getMakerList() {
+		return dao.getMakerList();
+	}
+
+	public void carUpdate(int car_idx, String status) {
+		carDTO.setCar_idx(car_idx);
+		carDTO.setStatus(status);
+		
+		dao.carUpdate(carDTO);
+	}
+
+	public void adminCarUpdate(HashMap<String, Object> data) {
+		dao.adminCarUpdate(data);
+	}
+
+	public CarList keywordSearch(String keyword) {
+		carList.setList(dao.keywordSearch(keyword));
+		
+		return carList;
 	}
 
 	

@@ -12,7 +12,7 @@ $(() => {
 	});
 
 	/* 세부 옵션 선택시 */
-	 $('.chk_group finput').click(() => {
+	 $('.chk_group input').click(() => {
 		 
 		var ele = $('#chk_ele').prop('checked');
 		var gas = $('#chk_gas').prop('checked');

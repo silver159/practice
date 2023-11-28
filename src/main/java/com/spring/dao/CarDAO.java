@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.spring.dto.CarDTO;
 import com.spring.dto.CarInfoDTO;
+import com.spring.dto.CarList;
 import com.spring.dto.CarParam;
 import com.spring.dto.RentalDTO;
 import com.spring.dto.repleDTO;
@@ -36,6 +37,16 @@ public interface CarDAO {
 	void carInfoDelete(int carInfo_idx);
 
 	List<Map<String, Integer>> statusCount();
+
+	List<String> getTypeList();
+
+	List<String> getMakerList();
+
+	void carUpdate(CarDTO carDTO);
+
+	void adminCarUpdate(HashMap<String, Object> data);
+
+	ArrayList<CarDTO> keywordSearch(String keyword);
 
 	
 }

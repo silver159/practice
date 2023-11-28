@@ -1,6 +1,7 @@
 package com.spring.controller.admin;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,6 @@ public class adminRentalController {
 	@RequestMapping(value = "/admin/rentalList", method = RequestMethod.GET)
 	public String rentalList(Model model) {
 		System.out.println("adminRental의 rentalList");
-		
 		ArrayList<RentalDTO> rentalList = service.getRentalList(); 
 		
 		System.out.println(rentalList);
@@ -49,14 +49,39 @@ public class adminRentalController {
 		return "admin/rentalList";
 	}
 	
-//	매출조회 ( 월별, 연별 )
+	
+//	랜트차량 조회 ( 월별 month, 연별 year )
+	@RequestMapping(value = "/admin/rentalList/month", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, String> rentListMonth(@RequestBody Map<String, Object> data) {
+		System.out.println("adminRental의 rentListMonth");
+		System.out.println(data); // ( year, month ) or year
+		
+		ArrayList<RentalDTO> rentalList = service.rentListMonth(data);
+		
+		System.out.println(rentalList);
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("result", "success");
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			String jsonString = objectMapper.writeValueAsString(rentalList);
+			map.put("result", "success");
+			map.put("rentalList", jsonString);
+		} catch (Exception e) { }
+		
+		return map;
+	}
+	
+//	매출조회 ( 월별 month, 연별 year )
 	@RequestMapping(value = "/admin/income", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> income(@RequestBody String data) {
+	public Map<String, String> income(@RequestBody Map<String, Object> data) {
 		System.out.println("adminRental의 income");
-		System.out.println(data);
-		int income = service.income(data);
+		System.out.println(data); // type, year, month
 		
+		
+		int income = service.income(data);
 		System.out.println(income);
 		
 		Map<String, String> map = new HashMap<String, String>();
@@ -65,12 +90,11 @@ public class adminRentalController {
 		
 		return map;
 	}
-//	매출조회 ( 올해 월단위로  )
+//	매출조회 ( 올해 월단위로 )
 	@RequestMapping(value = "/rental/incomeList", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> yearlyIncome() {
 		System.out.println("adminRental의 income");
-		
 		
 		List<Map<String, Integer>> incomeList = service.incomeList();
 		

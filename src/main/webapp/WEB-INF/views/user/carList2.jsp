@@ -23,7 +23,9 @@
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.7.0.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/rental.js"></script>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/rental2.js"></script>
-    
+
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 	    <style type="text/css">
 	    
 	    .chk_group label:nth-child(n) {

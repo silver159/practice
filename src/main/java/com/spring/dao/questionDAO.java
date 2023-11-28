@@ -26,5 +26,7 @@ public interface questionDAO {
 	public void deleteQuestion(String[] delData);
 
 	public questionDTO questionSelect(questionDTO dto);
+
+	public int unfinishedCount();
 	
 }

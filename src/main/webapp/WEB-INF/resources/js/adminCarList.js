@@ -7,15 +7,30 @@ function updateValue(value) {
     document.getElementById("limitValue").textContent = value;
 }
 
-function photoView(event) {
-   $('#output').attr('src', URL.createObjectURL(event.target.files[0]));
-}
-
-function updateValue(value) {
-    document.getElementById("limitValue").textContent = value;
-}
-
-
+// 키워드 생성
+fetch("/test/adminkeyword/keywordOpstion", {
+	method: "POST",
+})
+.then(response => {
+	return response.json();
+})
+.then(json => {
+	if(json.result == "success") {
+		var keywordList = JSON.parse(json.keywordList);
+		
+		console.log(keywordList);
+		
+		var keyword_print = "<h4>키워드 적용</h4>";
+		
+		$.each(keywordList, function (index, list) {
+			keyword_print += '<input type="checkbox" value="'+list+'" data-toggle="toggle" data-width="120" data-height="40" data-on="' +list+ '" data-off="' +list+ '"/>';
+		})
+		
+		$('#keyword_box').hide();
+		$('#keyword_box > div').html(keyword_print);
+		
+	}
+})
 
 
 $(() => {
@@ -35,8 +50,8 @@ $(() => {
 	$('#show_modal').click(() => {
 		
 		create_opstions();
-
-		$('#infoTable').hide();
+		$('#infoInsert_form').hide();
+		
 	});
 	
 	
@@ -75,11 +90,15 @@ $(() => {
 					'<td>' +carInfo.seatCount+ '</td>';
 
 				$('#selectedCar').html(carInfo_print);
-				$('#infoTable').show();
+				$('#output').attr('src', '/upload/' +carInfo.image)
+				
+				$('#carInsert_form').show();
+				$('#infoInsert_form').show();
 				$('#info_add_btn').show();
-				$('#back_put_group').hide();
 				$('#carInsert_btn').show();
 				$('#info_delete_btn').show();
+				$('#back_put_group').hide();
+				$('#image_box').hide();
 			}
 		})
 	})
@@ -93,7 +112,10 @@ $(() => {
 			return;
 		}
 		
+		$('#output').removeAttr('src');
+		
 		var carInfo_print = "";
+		var keyword_print = "";
 		
 		carInfo_print += 
 			'<td><input class="form-control" name="maker" placeholder="기아,제네시스..."></td>' +
@@ -122,38 +144,46 @@ $(() => {
 			'</td>' +
 			'<td><input class="form-control" type="text" name="seatCount" autocomplete="off"></td>';
 			
+		keyword_print +=
+			'<h4>키워드 적용</h4>';
 		
 		
 		$('#selectedCar').html(carInfo_print);
 		
-		$('#infoTable').show();
 		$('#image_box').show();
-		$('#info_add_btn').toggle();
-		$('#back_put_group').toggle();
+		$('#keyword_box').show();
+		$('#infoInsert_form').show();
+		$('#back_put_group').show();
+		$('#carInsert_form').hide();
+		$('#info_add_btn').hide();
 		$('#carInsert_btn').hide();
 		$('#info_select_btn').hide();
 		$('#info_delete_btn').hide();
 	})
 	
+//	돌아가기 버튼
 	$('#info_back_btn').click(() => {
-		$('#infoTable').hide();
-		$('#image_box').hide();
+		
+		$('#output').removeAttr('src');
+		
+		$('#keyword_box').hide();
+		$('#info_add_btn').show();
 		$('#info_select_btn').show();
-		$('#info_delete_btn').show();
-		$('#info_add_btn').toggle();
-		$('#back_put_group').toggle();
+		$('#infoInsert_form').hide();
+		$('#carInsert_form').hide();
+		$('#back_put_group').hide();
+		$('#info_delete_btn').hide();
 	})
 	
 //	새로운 차량정보 등록하기
 	$('#info_put_btn').click(() => {
 		
-		
 		const form_list = $('#selectedCar').find('input.form-control');
 		
 		var form_is = false;
 		
-		console.log(form_list);
 		$.each(form_list, function (index, list) {
+			console.log($(list).val());
 			if(index == 2){
 				return true;
 			}	
@@ -168,22 +198,52 @@ $(() => {
 			return;
 		}
 		
-		
-		
-		
 		const is = confirm('차량정보를 등록하시겠습니까?'); 
-		if(!is){
-			return;
-		}
+		if(!is){return;}
 		
+
 		$('#infoInsert_form').submit();
 		
+		fetch("/test/admin/car/lastCarinfo_idx", {
+			method: "POST",
+		})
+		.then(response => {
+			return response.json();
+		})
+		.then(json => {
+			if(json.result == "success") {
+				var carinfo_idx = json.carinfo_idx;
+				
+				var keywordList = $('#keyword_box input[type=checkbox]:checked');
+				console.log(keywordList);
+				
+				var data = {
+						name: [],
+						carinfo_idx: carinfo_idx
+				}
+				
+				$.each(keywordList, (index, list) => {
+					data.name.push($(list).val());
+				});
+				keywordInsert(data);
+			}
+		})
+//		
+
+			
+		
+//		
+//		
+//		키워드 저장
 		setTimeout(() => {
 			alert('등록되었습니다.');
-			$('#infoTable').hide();
-			$('#image_box').hide();
+			
+			$('#output').removeAttr('src');
+			
+			$('#keyword_box').hide();
+			$('#infoInsert_form').hide();
 			$('#info_select_btn').show();
-			$('#info_delete_btn').show();
+			$('#info_delete_btn').hide();
 			
 			$('#info_add_btn').toggle();
 			$('#back_put_group').toggle();
@@ -252,11 +312,68 @@ $(() => {
 					
 		})
 	})
+//	차량상태 변경하기 (모달)버튼
+	$('#status_show_modal').click(() => {
+		
+		const box_checked = $('.check:checked');
+		
+		if(box_checked.length == 0){
+			alert('변경할 차량을 선택하세요.');
+			$('#status_modal').modal('hide');
+			return;
+		}
+		$('#status_modal').modal('show');
+	});
+	
+//	(차량상태) 변경하기 버튼
+	$('#car_update_btn').click(() => {
+
+		const select_option = $('#radio_box input:checked').val();
+		const is = confirm('차량 상태를 ' +select_option+ '로 변경하시겠습니까?');
+		if(!is){return;}
+		
+		const box_checked = $('.check:checked');
+		const data = {
+				car_idx: [],
+				status: select_option
+		}
+		$.each(box_checked, function (index, elm) {
+			data.car_idx.push($(elm).val());
+		})
+		
+		const url = "/test/admin/carUpdate";
+		// 데이터 조회
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		})
+		.then(response => {
+			return response.json();
+		})
+		.then(json => {
+			if(json.result == "success") {
+				
+				setTimeout(() => {
+					alert('변경완료');
+					location.reload();
+				}, 500);
+			}
+		})
+
+	});
+
+		
+		
+		
+		
+
 	
 
 //	차량 삭제하기
 	$('#car_delete_btn').click(() => {
-		
 		const box_checked = $('.check:checked');
 		
 		if(box_checked.length == 0){
@@ -265,9 +382,7 @@ $(() => {
 		}
 		
 		const is = confirm('삭제하시겠습니까?');
-		if(!is){
-			return;
-		}
+		if(!is){return;}
 		
 		const data = {
 			car_idx: []
@@ -293,7 +408,7 @@ $(() => {
 			if(json.result == "success") {
 				
 				setTimeout(() => {
-					alert('삭제완료s');
+					alert('삭제완료');
 					location.reload();
 				}, 500);
 			}
@@ -330,7 +445,14 @@ $(() => {
 		.then(json => {
 			if(json.result == "success") {
 				setTimeout(() => {
-					alert('삭제완료s');
+					alert('삭제완료');
+					
+					$('#output').removeAttr('src');
+					
+					$('#infoInsert_form').hide();
+					$('#carInsert_form').hide();
+					$('#info_delete_btn').hide();
+					
 					create_opstions();
 				}, 500);
 			}
@@ -364,7 +486,26 @@ $('#summary_btn').click(() => {
 	$('#carTable').parent().attr('class', 'col-lg-12 d-flex justify-content-center');
 	
 })
-	
+	const keywordInsert = data => {
+		console.log(data);
+		const url = '/test/adminkeyword/keywordInsert';
+		fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(data),
+		})
+		.then(response => {
+			return response.json();
+		})
+		.then(json => {
+			if(json.result == "success") {
+				console.log('키워드 성공');
+			}
+		})
+		
+	}
 	
 	
 	

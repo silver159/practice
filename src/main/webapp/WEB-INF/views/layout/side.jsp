@@ -17,7 +17,8 @@
             <li><a href="<%=request.getContextPath()%>/admin/member.do" class="link-body-emphasis d-inline-flex text-decoration-none rounded">회원</a></li>
             <li><a href="<%=request.getContextPath()%>/admin/user.do" class="link-body-emphasis d-inline-flex text-decoration-none rounded">관리자</a></li>
             <li><a href="<%=request.getContextPath()%>/admin/question.do" class="link-body-emphasis d-inline-flex text-decoration-none rounded">문의사항</a></li>
-          	<li><a href="<%= request.getContextPath()%>/admin/carList" class="link-body-emphasis d-inline-flex text-decoration-none rounded">차량 리스트</a></li>
+          	<li><a href="<%= request.getContextPath()%>/admin/carList" class="link-body-emphasis d-inline-flex text-decoration-none rounded">차량 관리</a></li>
+          	<li><a href="<%= request.getContextPath()%>/admin/event.do" class="link-body-emphasis d-inline-flex text-decoration-none rounded">이벤트 관리</a></li>
           </ul>
         </div>
       </li>
