@@ -192,7 +192,7 @@
 		    <version>3.7</version>
 		</dependency>
 		
-				<!-- 네이버메일 -->
+		<!-- 네이버메일 -->
 		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>
 		    <groupId>javax.mail</groupId>
