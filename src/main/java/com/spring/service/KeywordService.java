@@ -15,6 +15,7 @@ import com.spring.dto.CarDTO;
 import com.spring.dto.CarInfoDTO;
 import com.spring.dto.CarList;
 import com.spring.dto.CarParam;
+import com.spring.dto.KeywordDTO;
 import com.spring.dto.memberDTO;
 
 @Service
@@ -32,14 +33,14 @@ public class KeywordService {
 		dao.keywordInsert(data);
 	}
 
-	public Map<String, ArrayList<CarInfoDTO>> getkeywordList() {
+	public Map<String, ArrayList<CarInfoDTO>> getkeywordCarList() {
 		
 		List<String> keywordNames = dao.keywordOpstion();
 		
 		Map<String, ArrayList<CarInfoDTO>> keywordList = new HashMap<String, ArrayList<CarInfoDTO>>();
 		
 		for (String item : keywordNames) {
-			keywordList.put(item, dao.getkeywordList(item));
+			keywordList.put(item, dao.getkeywordCarList(item));
 			
 			if(keywordList.get(item).size() <= 0) {
 				keywordList.remove(item);
@@ -47,6 +48,10 @@ public class KeywordService {
 		}
 		
 		return keywordList;
+	}
+
+	public ArrayList<KeywordDTO> getkeywordList() {
+		return dao.getkeywordList();
 	}
 
 

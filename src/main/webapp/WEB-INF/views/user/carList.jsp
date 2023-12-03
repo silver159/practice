@@ -168,8 +168,6 @@
 	</div>
 	<form id="article" action="/test/car/article" method="post" hidden>
 		<input name="car_idx"/>
-		<input name="rentalDateStr"/>
-		<input name="dueDateStr"/>
 	</form>
 	<div id="data-container" data-carlist_json="${carList_json}"></div>
 	

@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="description" content="" />
+<meta name="description" content=""/>
 <meta name="author" content="" />
 <title>메인페이지입니다.</title>
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -13,7 +13,7 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
     <!-- Simple line icons-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" rel="stylesheet"/>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">	
     <!-- css -->
@@ -27,19 +27,22 @@
 	<!-- slider -->	
 	
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 	<script type="text/javascript" src="<%= request.getContextPath()%>/js/index.js" defer="defer"></script> 
 	<style type="text/css">
 		
 		#rental-box {
-			/* 		
+			/* 
+			position: fixed;
 			right: 90px;
-			top: 550px;
+			top: 300px;
 			 */
 	    	width: 420px;
 	    	
 	    }
 	    
-	    .autoplay img:hover {
+	    
+	    .autoplay .active_img:hover {
 	    	
 	    	cursor: pointer;
 	    
@@ -152,7 +155,6 @@
         </div>
     </div>
     <!-- Menu End -->
-
     <!-- Header -->
     <header class="header">
         <div class="header__top">
@@ -219,24 +221,62 @@
     <div class="container">
     	<div class="row">
     		<div class="col-md-10">
-    			
-			    <c:forEach items="${keywordList.keySet()}" var="list" varStatus="loopStatus">
-			    
-					<div class="row mb-2">
-						<h4 class="my-4">${list} 찾으시나요?</h4>
-						<div id="keyword_wrap_${loopStatus.index}" class="autoplay d-flex align-items-center">
-			    		<input class="keyword_name" type="hidden" value="${list}">
-				    	<c:forEach items="${keywordList.get(list)}" var="car">
+    				
+				    <c:forEach items="${keywordCarList.keySet()}" var="list" varStatus="loopStatus">
+				    
+				    <div class="row">
+						<div class="mb-2">
+							<!-- 키워드 차량리스트 제목 -->
+							<h4 class="my-4 d-flex justify-content-center">${keywordTitle.get(list)}</h4>
+							<div id="keyword_wrap_${loopStatus.index}" class="autoplay d-flex align-items-center" style="width: 840px;"><!-- 450 -->
+				    		
+					    	<c:forEach items="${keywordCarList.get(list)}" var="car">
+		    		<!-- 입고 된 차량 -->
+					    		
+					    		<c:if test="${car.status.equals('입고')}">
+					    		
+						    	<div style="margin: 0 20px; position: relative;">
+						    		<input class="car_idx" type="hidden" value="${car.car_idx}">
+									<img class="keyword_img active_img" src="/upload/${car.image}" style="width:390px; height: 220px; ">
+									<span class="d-flex justify-content-center align-items-center">
+										<img style="width: 75px; height: 50px; display: inline-block;" src="/test/images/logo/${car.maker}.png"/>
+										<h4 style="margin-left: 10px">${car.model} ${car.series}</h4>
+									</span>
+					    		</div>
+					    		</c:if>
+					    		
+		    		<!-- 출고 된 차량-->
+					    		
+					    		<c:if test="${!car.status.equals('입고')}">
+					    		
+						    	<div style="margin: 0 20px;">
+						    		<div style="position: relative;">
+										<img class="keyword_img" src="/upload/${car.image}" style="width:390px; height: 220px; filter: grayscale(100%);">
+										<h2 class="text-danger top-50 start-50 translate-middle" style="position: absolute;">예약마감</h2>
+						    		</div>
+									<span class="d-flex justify-content-center align-items-center">
+										<img style="width: 75px; height: 50px; display: inline-block;" src="/test/images/logo/${car.maker}.png"/>
+										<h4 style="margin-left: 10px">${car.model} ${car.series}</h4>
+									</span>
+						    	</div>
+					    		
+					    		</c:if>
+					    		
+					    		
+					    		
+					    		
+					    		
+					    	
+					    	
+								
+					    	</c:forEach>
+					    	
+				    		</div>
+				    	</div>
+				    </div>
 				    	
-							<img src="/upload/${car.image}" style="width:390px; height: 220px; padding: 0 20px;">
-							
-				    	</c:forEach>
-				    	
-			    		</div>
-			    	</div>
-			    	
-			    </c:forEach>
-    			
+				    </c:forEach>
+    				
 			</div>
 			<div class="col-md-2">
 
@@ -289,16 +329,8 @@
 		</div>
     </div>
     
-
     
     
-    
-    
-	<form id="article" action="/test/car/article" method="post" hidden>
-		<input name="car_idx"/>
-		<input name="rentalDateStr"/>
-		<input name="dueDateStr"/>
-	</form>
 	
 	<!-- body end -->
     <!-- Footer-->

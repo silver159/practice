@@ -17,7 +17,8 @@
 	
 	</insert>
 	
-	<select id="getkeywordList" parameterType="String" resultType="com.spring.dto.CarDTO">
+	
+	<select id="getkeywordCarList" parameterType="String" resultType="com.spring.dto.CarDTO">
 		SELECT * FROM tb_car car
 		    JOIN tb_carinfo info
 				ON car.carinfo_idx = info.carinfo_idx
@@ -25,7 +26,17 @@
 				ON mm.carinfo_idx = info.carinfo_idx
 		    JOIN tb_keyword keyword
 				ON keyword.keyword_idx = mm.keyword_idx
-		    WHERE keyword.name=#{name};
+
+		<if test="name != null">
+			
+		    WHERE keyword.name=#{name}
+		    
+		</if>
+		
+	</select>
+	
+	<select id="getkeywordList">
+		SELECT * FROM tb_keyword
 	</select>
 	
 </mapper>

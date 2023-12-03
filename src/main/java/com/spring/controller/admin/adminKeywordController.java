@@ -17,16 +17,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.spring.common.paging;
 import com.spring.dto.CarDTO;
 import com.spring.dto.CarInfoDTO;
 import com.spring.dto.CarInfoList;
 import com.spring.dto.CarList;
 import com.spring.dto.CarParam;
+import com.spring.dto.KeywordDTO;
+import com.spring.dto.questionDTO;
 import com.spring.dto.userDTO;
 import com.spring.service.CarService;
 import com.spring.service.KeywordService;
@@ -45,6 +49,14 @@ public class adminKeywordController {
 	@Autowired
 	CarInfoList infoList;	
 	
+	
+	@RequestMapping(value = "/admin/keyword", method = RequestMethod.GET)
+	public String adminQuestion(Model model) {
+		
+		
+		
+		return "admin/keyword";
+	}
 	
 	@RequestMapping(value = "/adminkeyword/keywordOpstion", method = RequestMethod.POST)
 	@ResponseBody 

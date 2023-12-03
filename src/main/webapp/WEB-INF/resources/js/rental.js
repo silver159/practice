@@ -1,10 +1,5 @@
 $(() => {
 	
-//	console.log('gd');
-//	var carList_json = $('#data-container').data('carlist_json');
-//	console.log(carList_json);
-//	console.log(JSON.parse(carList_json));
-	
 	/* 전체 옵션 선택시 */
 	$('#chk_all').click(() => {
 		var all = $('#chk_all').prop('checked');
@@ -117,11 +112,6 @@ $(() => {
 			
 			carBox += close();
 			
-				
-			
-			
-						
-			
 			$('#carListContainer').html(carBox);
 		})
 	});
@@ -149,7 +139,7 @@ const open = (car) => {
 		
 			'<div id="aa" class="row m-2" style="background-color: #DDDDDD;">' +
 				'<div class="col-6">' +
-					'<h3 class="car_series">' + car.model + ' ' + car.series + '</h3>' +
+					'<h4 class="car_series">' + car.model + ' ' + car.series + '</h4>' +
 					'<span class="car_option">' + car.year + '년식 · ' + car.seatCount + '인승 · ' +car.type+ '</span>' +
 				'</div>' +
 				'<div class="col-6 d-flex align-items-center justify-content-end">' +
@@ -167,7 +157,7 @@ const onlydata = (car) => {
 	const carBox = 
 		'<div id="aa" class="row m-2" style="background-color: #DDDDDD;">' +
 			'<div class="col-6">' +
-				'<h3 class="car_series">' + car.model + ' ' + car.series + '</h3>' +
+				'<h4 class="car_series">' + car.model + ' ' + car.series + '</h4>' +
 				'<span class="car_option">' + car.year + '년식 · ' + car.seatCount + '인승 · ' +car.type+ '</span>' +
 			'</div>' +
 			'<div class="col-6 d-flex align-items-center justify-content-end">' +

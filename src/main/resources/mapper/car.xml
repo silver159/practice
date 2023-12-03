@@ -51,6 +51,7 @@
 			        <!-- 다른 조건에 대한 처리 -->
 			    </choose>
 			</if>
+			GROUP BY car.carinfo_idx
 			ORDER BY info.maker, info.model
 	</select>
 	
@@ -64,6 +65,7 @@
 		    JOIN tb_keyword keyword
 				ON keyword.keyword_idx = mm.keyword_idx
 	    	WHERE keyword.name= #{keyword}
+	    		AND car.status = '입고'
 	</select>
 	
 	

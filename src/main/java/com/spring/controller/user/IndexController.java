@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.dto.CarDTO;
 import com.spring.dto.CarInfoDTO;
+import com.spring.dto.KeywordDTO;
 import com.spring.service.KeywordService;
 
 
@@ -30,11 +31,17 @@ public class IndexController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model) {
 		logger.info("프로젝트 시작");
+		Map<String, ArrayList<CarInfoDTO>> keywordCarList = service.getkeywordCarList();
+		ArrayList<KeywordDTO> keywordList = service.getkeywordList();
 		
-		Map<String, ArrayList<CarInfoDTO>> keywordList = service.getkeywordList();
-//		System.out.println(keywordList);
+		Map<String, String> keywordTitle = new HashMap<String, String>();
 		
-		model.addAttribute("keywordList", keywordList);
+		for (KeywordDTO keyword : keywordList) {
+			keywordTitle.put(keyword.getName(), keyword.getTitle());
+		}
+		
+		model.addAttribute("keywordCarList", keywordCarList);
+		model.addAttribute("keywordTitle", keywordTitle);
 		
 		return "index";
 	}

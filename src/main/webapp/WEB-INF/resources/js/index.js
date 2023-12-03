@@ -5,10 +5,12 @@ $(() => {
 //	슬라이더 조작함수
 	const slickInsert = (selector) => {
 		$(selector).slick({
-			slidesToShow: 2,
-			slidesToScroll: 1,
-			centerMode: true,
+			slide: 'div',
 			autoplay: true,
+			variableWidth: true,
+			centerMode: true,
+			dots: true,
+			slidesToScroll: 1,
 			autoplaySpeed: 4000,
 			nextArrow : '<i class="text-primary fs-3 mx-2 bi bi-arrow-right-circle"></i>',
 			prevArrow : '<i class="text-primary fs-3 mx-2 bi bi-arrow-left-circle"></i>'
@@ -17,34 +19,32 @@ $(() => {
 	
 	// 키워드 갯수
 	const kw_length = $('.autoplay').length;
+	// 키워드의 이미지 갯수
+	var img_length = $(selector).find('.keyword_img').length;
+	console.log(img_length);
+
 	for(var i = 0; i < kw_length; i++) {
 		var selector = '#keyword_wrap_' + i;
 		
-		console.log(selector);
-		// 키워드의 이미지 갯수
-		var img_length = $(selector).find('img').length;
-		
-		console.log(img_length);
-		
-		if(img_length >= 3) {
+		if(kw_length != 0){
 			slickInsert(selector);
-		} else {
-			$(selector).attr('class', 'autoplay d-flex align-items-center justify-content-center');
 		}
+
 		
 	}
 	
 	// 슬라이더 이미지 클릭
-	$('.autoplay img').click((context) => {
-		const target = $(context.currentTarget).parent().find('.keyword_name');
-		const keyword = target.val();
-		console.log(keyword);
+	$('.autoplay .active_img').click((context) => {
+		const target = $(context.currentTarget).parent().find('.car_idx');
+		const car_idx = target.val();
+		console.log(car_idx);
 		
 		const search_form = $('#dynamic_form');
-		search_form.attr('action', '/test/car/kwSearch');
+		search_form.attr('action', '/test/car/article');
+		search_form.attr('method', 'post');
 		
 		var input = $('<input type="hidden">');
-		input.attr('name', 'keyword').val(keyword);
+		input.attr('name', 'car_idx').val(car_idx);
 		
 		search_form.append(input);
 		

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.spring.dto.CarDTO;
 import com.spring.dto.CarInfoDTO;
 import com.spring.dto.CarParam;
+import com.spring.dto.KeywordDTO;
 import com.spring.dto.RentalDTO;
 import com.spring.dto.repleDTO;
 
@@ -21,7 +22,9 @@ public interface KeywordDAO {
 
 	void keywordInsert(Map<String, Object> data);
 
-	ArrayList<CarInfoDTO> getkeywordList(String name);
+	ArrayList<CarInfoDTO> getkeywordCarList(String name);
+
+	ArrayList<KeywordDTO> getkeywordList();
 
 
 }
