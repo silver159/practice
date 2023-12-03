@@ -262,10 +262,9 @@
 	<!-- 모달 내용 -->
 	<div id="myModal" class="modal" style="display: none;">
 		<div class="modal-content">
-		<form class="comment-form mb-5 bg-grey p-5" action="<%= request.getContextPath()%>/adminQuestion/reple.do"
-				method="post" onsubmit="return repleOK()">
-        <span onclick="closeModal()" class="close-button">X</span>
-	    <div id="myHalf1">
+		<form class="comment-form mb-5 bg-grey p-5" action="<%= request.getContextPath()%>/adminQuestion/reple.do" method="post" onsubmit="return repleOK()">
+				<span onclick="closeModal()" class="close-button">X</span>
+				<div id="myHalf1">
         	<h3 class="mb-4 text-center">문의글 보기</h3>
 			<div class="row">
 				<!-- 제목 -->

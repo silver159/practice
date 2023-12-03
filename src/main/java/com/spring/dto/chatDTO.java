@@ -8,6 +8,7 @@ public class chatDTO {
 	private String id;
 	private String message;
 	private Date message_regdate;
+	private String room_id;
 	/*
 	private int unread_member_counts;
 	private int unread_admin_counts;
@@ -36,9 +37,16 @@ public class chatDTO {
 	public void setMessage_regdate(Date message_regdate) {
 		this.message_regdate = message_regdate;
 	}
+	public String getRoom_id() {
+		return room_id;
+	}
+	public void setRoom_id(String room_id) {
+		this.room_id = room_id;
+	}
 	
 	@Override
 	public String toString() {
-		return "chatDTO [idx=" + idx + ", id=" + id + ", message=" + message + ", message_regdate=" + message_regdate + "]";
+		return "chatDTO [idx=" + idx + ", id=" + id + ", message=" + message + ", message_regdate=" + message_regdate
+				+ ", room_id=" + room_id + "]";
 	}
 }

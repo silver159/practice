@@ -42,32 +42,11 @@ public class WebSocketController {
 		gson.toJson(list, response.getWriter());
 	}
 	
-	@RequestMapping(value = "/user/userChat.do", method = RequestMethod.GET)
-	public String userChat(HttpServletRequest request) {
-		logger.info("UserWebsocketController의 userchat()");
-		
-		return "user/userChat";
-	}
-	
-	@RequestMapping(value = "/user/userChat2.do", method = RequestMethod.GET)
-	public String userChat2(HttpServletRequest request) {
-		logger.info("UserWebsocketController의 userchat()");
-		
-		return "user/userChat2";
-	}
-	
 	@RequestMapping(value = "/admin/adminChat.do", method = RequestMethod.GET)
 	public String adminChat(HttpServletRequest request) {
 		logger.info("UserWebsocketController의 adminChat()");
 		
 		return "admin/adminChat";
-	}
-	
-	@RequestMapping(value = "/admin/adminChat2.do", method = RequestMethod.GET)
-	public String adminChat2(HttpServletRequest request) {
-		logger.info("UserWebsocketController의 adminChat()");
-		
-		return "admin/adminChat2";
 	}
 	
 }

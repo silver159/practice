@@ -4,14 +4,14 @@
 	
 	<!-- 채팅 내역을 얻어온다. -->
 	<select id="chatList" parameterType="String" resultType="com.spring.dto.chatDTO">
-		select * from tb_chat where id = #{id}
+		select * from tb_chat where room_id = #{id}
 	</select>
 	
 	<!-- 채팅을 저장한다. -->
 	<insert id="insertChat" parameterType="com.spring.dto.chatDTO">
 		INSERT INTO tb_chat
-		(id, message, message_regdate)
-		VALUES( #{id}, #{message}, now())
+		(id, message, message_regdate, room_id)
+		VALUES( #{id}, #{message}, now(), #{room_id})
 	</insert>
 </mapper>
 
