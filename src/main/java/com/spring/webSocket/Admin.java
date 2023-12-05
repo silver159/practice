@@ -29,8 +29,8 @@ public class Admin {
 		admin = userSession;
 		// 기존에 접속해 있는 유저의 정보를 운영자 client로 보낸다.
 		for (String key : BroadSocket.getUserKeys()) {
-			// 전송.. 전송
-			visit(key);
+			String userId = BroadSocket.getUserIdByKey(key);
+			visit(key, userId);
 		}
 	}
 
@@ -65,9 +65,10 @@ public class Admin {
 	}
 
 	// 일반 유저가 접속했을 때, 운영자 유저에게 알리는 함수
-	public static void visit(String key) {
+	public static void visit(String key, String id) {
 		// json 구조로 status는 visit이고 key는 유저 키 정보이다.(javascript와 맞추는 프로토콜)
-		send("{\"status\":\"visit\", \"key\":\"" + key + "\"}");
+		System.out.println("Admin의 visit()");
+		send("{\"status\":\"visit\", \"key\":\"" + key + "\", \"id\":\"" + id + "\"}");
 	}
 
 	// 일반 유저가 메시지를 보낼 때, 운영자 유저에게 알리는 함수

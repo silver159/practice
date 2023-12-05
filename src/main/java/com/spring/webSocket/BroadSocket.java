@@ -6,15 +6,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.spring.dto.chatRoomDTO;
+import com.spring.service.chatService;
+
 // 일반 유저에서 서버간의 웹 소켓 url
-@ServerEndpoint("/broadsocket")
+@ServerEndpoint(value = "/broadsocket", configurator = WebSocketConfigurator.class)
 public class BroadSocket {
+	
 	// searchUser 함수의 filter 표현식을 위한 인터페이스
 	private interface SearchExpression {
 		// 람다식을 위한 함수
@@ -24,6 +33,7 @@ public class BroadSocket {
 	// 서버와 유저간의 접속을 key로 구분하기 위한 인라인 클래스
 	private class User {
 		Session session;
+		String id;
 		String key;
 	}
 
@@ -55,16 +65,27 @@ public class BroadSocket {
 	// browser에서 웹 소켓으로 접속하면 호출되는 함수
 	@OnOpen
 	public void handleOpen(Session userSession) {
+		
+		// Configurator에서 설정한 값을 가져오기
+        String memberID = (String) userSession.getUserProperties().get("memberID");
+        System.out.println("WebSocket 연결이 열렸습니다. memberID: " + memberID);
+        
 		// 인라인 클래스 User를 생성
 		User user = new User();
 		// Unique키를 발급 ('-'는 제거한다.)
 		user.key = UUID.randomUUID().toString().replace("-", "");
 		// WebSocket의 세션
 		user.session = userSession;
+		// 아이디
+		user.id = memberID;
 		// 유저 리스트에 등록한다.
 		sessionUsers.add(user);
+		// chatRoom에 저장한다.
+		System.out.println("user: "+ user);
+		System.out.println("user.id: "+ user.id);
+		System.out.println("user.key: "+ user.key);
 		// 운영자 Client에 유저가 접속한 것을 알린다.
-		Admin.visit(user.key);
+		Admin.visit(user.key, user.id);
 	}
 
 	// browser에서 웹 소켓을 통해 메시지가 오면 호출되는 함수
@@ -119,5 +140,18 @@ public class BroadSocket {
 		}
 		// 값 반환
 		return ret;
+	}
+	
+	// key 값을 가지고 Id 찾기 
+	public static String getUserIdByKey(String key) {
+	    for (User user : sessionUsers) {
+	        if (user.key.equals(key)) {
+	            // 해당 키에 해당하는 사용자의 아이디 반환
+	        	System.out.println("user.id: "+user.id);
+	            return user.id;
+	        }
+	    }
+	    // 해당 키에 해당하는 사용자를 찾을 수 없을 경우 null 반환
+	    return null;
 	}
 }

@@ -29,7 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 	<script type="text/javascript" src="<%= request.getContextPath()%>/js/index.js" defer="defer"></script> 
-	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	
 	<style type="text/css">
 		
@@ -419,7 +419,7 @@
 					</div>
 					<div class="modal-body">
 		                <p>지금은 상담 시간이 아닙니다.</p>
-		                <p>상담 시간은 09시부터 18시 30분까지입니다.</p>
+		                <p>상담 시간은 09시부터 18시까지입니다.</p>
 		                <p>문의하기를 이용해주세요.</p>
 		            </div>
 					<form class="modal-footer">
@@ -465,42 +465,64 @@
 		
 		// 웹 소켓 객체를 전역으로 선언
 		var webSocket;
-		console.log(webSocket);
 		var memberID = "${memberID}";
+		
+		// "문의하기" 버튼 클릭 시 이벤트
+	    $('#inquiryButton').on('click', function () {
+	        // 여기에 페이지 이동 로직 추가
+	        window.location.href = "${pageContext.request.contextPath}/user/question.do";
+	    });
+		
+		
 		// 모달 띄우기 버튼 클릭
 		document.getElementById('openModalButton').addEventListener('click',function() {
 			
-			// 모달 띄우기
-			var myModal = new bootstrap.Modal(document.getElementById('questionModal'), {
-				// 배경 클릭시 모달이 닫히지 않도록 설정
-				backdrop : 'static', 
-			});
+			// 허용된 채팅 시간대 설정
+			const chatStart = 9;
+			const chatEnd = 24;
 			
-		    function showModal() {
-		        // 모달이 열릴 때 웹 소켓 연결
-		        myModal.show();
-		        myModal._element.addEventListener('shown.bs.modal', function onModalShown() {
-		            if (!webSocket || webSocket.readyState !== WebSocket.OPEN) {
-		                // 소켓이 없거나 연결이 닫혔으면 새로 연결
-		                setupWebSocket();
-		            }
-		            
-		            // 모달이 닫힐 때 이벤트 리스너를 제거
-		            myModal._element.removeEventListener('shown.bs.modal', onModalShown);
-		            
-		        });
+			// 현재 시간을 가져온다.
+		    var now = new Date();
+		    var currentHour = now.getHours();
+	
+			// 현재 시간이 허용된 채팅 시간대에 있는지 확인한다.
+		    if (currentHour >= chatEnd || currentHour < chatStart) {
+		    	$('#chatTimeModal').modal('show');
+		    } else {
+		    	
+				// 모달 띄우기
+				var myModal = new bootstrap.Modal(document.getElementById('questionModal'), {
+					// 배경 클릭시 모달이 닫히지 않도록 설정
+					backdrop : 'static', 
+				});
+				
+			    function showModal() {
+			        // 모달이 열릴 때 웹 소켓 연결
+			        myModal.show();
+			        myModal._element.addEventListener('shown.bs.modal', function onModalShown() {
+			            if (!webSocket || webSocket.readyState !== WebSocket.OPEN) {
+			                // 소켓이 없거나 연결이 닫혔으면 새로 연결
+			                setupWebSocket();
+			            }
+			            
+			            // 모달이 닫힐 때 이벤트 리스너를 제거
+			            myModal._element.removeEventListener('shown.bs.modal', onModalShown);
+			            
+			        });
+			    }
+			    
+			    // 모달 띄우기 및 웹 소켓 연결
+			    showModal();
 		    }
-		    
-		    // 모달 띄우기 및 웹 소켓 연결
-		    showModal();
+			
 		});
 		
 		// 웹 소켓 설정 함수
 		function setupWebSocket() {
 		    // 서버의 broadsocket의 서블릿으로 웹 소켓을 한다.
 		    webSocket = new WebSocket(
-		        "ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/broadsocket");
-
+		        "ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/broadsocket"
+		    );
 		    // 텍스트 영역
 		    var messageTextArea = document.getElementById("messageTextArea");
 			
@@ -510,15 +532,13 @@
 		    // 접속이 완료되면
 		    webSocket.onopen = function (message) {
 		        console.log("WebSocket 연결이 열렸습니다.");
-				console.log(memberID);
-				
 				// 채팅방의 메시지 목록 불러오기
 				$.ajax({
-					url: "${pageContext.request.contextPath}/user/messageList.do",
+					url: "${pageContext.request.contextPath}/webSocket/messageList.do",
 					data: {
 						id : "${memberID}"
 					},
-					async: false,
+					async: true,
 					dataType: "json",
 					success:function(data) {
 						console.log(data);
@@ -537,7 +557,7 @@
 				const LR = (item.id != "${memberID}") ? "left" : "right";
 			
 				// 메세지 추가
-				displayMessage(item.message, LR);		
+				displayMessage(item.message, LR, item.message_regdate);		
 			}
 		    
 		    
@@ -545,7 +565,7 @@
 		    webSocket.onerror = function (message) {
 		        console.log("error...");
 		    };
-
+	
 		    // 서버로부터 메시지가 도착하면 화면에 메시지를 남긴다.
 		    webSocket.onmessage = function (message) {
 		        displayMessage(message.data, "left");
@@ -574,7 +594,7 @@
 		    });
 			
 		}
-
+	
 		// 서버로 메시지를 발송하는 함수
 		function sendMessage() {
 		    // 텍스트 박스의 객체를 가져옴
@@ -585,17 +605,30 @@
 			    displayMessage(message.value, "right");
 			    // 소켓으로 보낸다.
 			    webSocket.send(message.value);
-			    // 텍스트 박스 초기화
+				$.ajax({
+					url: "${pageContext.request.contextPath}/webSocket/insertChat.do",
+					data: {
+						id : "${memberID}",
+						room_id : "${memberID}",
+						message : message.value
+					},
+					async: true,
+					dataType: "json",
+					success:function(data) {
+						console.log(data);
+					}
+				});
 		    }
+		    // 텍스트 박스 초기화
 		    message.value = "";
 		}
-
+	
 		// 데이터를 채팅창에 넣어준다.
-		function displayMessage(content, alignment) {
+		function displayMessage(content, alignment, regdate) {
 		    let messageContainer = document.createElement("div");
 		    messageContainer.classList.add("message");
 		    messageContainer.classList.add(alignment);
-
+			
 		    // "(상담사)"와 채팅 내용을 각각 다른 줄에 표시
 		    if (alignment === 'left') {
 		        let sender = document.createElement("div");
@@ -603,15 +636,39 @@
 		        sender.textContent = '(상담사)';
 		        messageContainer.appendChild(sender);
 		    }
-
+	
 		    let messageContent = document.createElement("div");
 		    messageContent.classList.add("content");
 		    messageContent.textContent = content;
 		    messageContainer.appendChild(messageContent);
-
+		    
+		 	// 날짜
+			var now = new Date();
+			var hours = now.getHours();
+			var minutes = now.getMinutes();
+			var ampm = hours < 12 ? '오전' : '오후';
+	
+			// 시간이 12시간제로 표시되도록 조정
+			hours = hours % 12;
+			hours = hours ? hours : 12; // 0시는 12시로 표시
+	
+			// 분이 한 자리 수일 경우 앞에 0 추가
+			minutes = minutes < 10 ? '0' + minutes : minutes;
+	
+			var nowTime = ampm + ' ' + hours + ':' + minutes;
+		    
+		    let timeContent = document.createElement("div");
+		    if(typeof regdate == "undefined") {
+		    	timeContent.textContent = nowTime;
+			}
+			else {
+				timeContent.textContent = regdate;
+			}
+		    messageContainer.appendChild(timeContent);
+	
 		    // 각 메시지를 새로운 줄에 추가
 		    document.getElementById("messageTextArea").appendChild(messageContainer);
-
+	
 		    // 항상 최신 메시지를 보여주기 위해 스크롤을 맨 아래로 이동
 		    document.getElementById("messageTextArea").scrollTop = document.getElementById("messageTextArea").scrollHeight;
 		}

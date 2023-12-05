@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
+import com.spring.dto.chatDTO;
 import com.spring.dto.chatList;
 import com.spring.service.chatService;
 
@@ -28,10 +31,9 @@ public class WebSocketController {
 	public chatService service;
 	
 	// 채팅방 메시지 목록 불러오기
-	@RequestMapping(value = "/user/messageList.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/webSocket/messageList.do", method = RequestMethod.GET)
 	public void messageList(HttpServletResponse response, String id) throws JsonIOException, IOException {
 		logger.info("UserWebsocketController의 messageList()");
-		logger.info(id);
 		Gson gson = new GsonBuilder().create();
 		
 		// chatList 가져오기		
@@ -40,6 +42,26 @@ public class WebSocketController {
 		response.setContentType("applicaion/json; charset=UTF-8");
 		// json 문자열로 변환
 		gson.toJson(list, response.getWriter());
+	}
+	
+	@RequestMapping(value = "/webSocket/insertChat.do", method = RequestMethod.GET)
+	@ResponseBody
+	public void insertChat(HttpServletResponse response, @RequestParam String id, @RequestParam String message, @RequestParam String room_id) throws JsonIOException, IOException {
+		logger.info("UserWebsocketController의 insertChat()");
+		logger.info(id);
+		logger.info(message);
+		logger.info(room_id);
+		
+		chatDTO chat = new chatDTO();
+		chat.setId(id);
+		chat.setMessage(message);
+		chat.setRoom_id(room_id);
+		service.insertChat(chat);
+		
+		Gson gson = new GsonBuilder().create();
+		response.setContentType("applicaion/json; charset=UTF-8");
+		// json 문자열로 변환
+		gson.toJson("성공", response.getWriter());
 	}
 	
 	@RequestMapping(value = "/admin/adminChat.do", method = RequestMethod.GET)
