@@ -30,7 +30,11 @@ public class KeywordService {
 	}
 
 	public void keywordInsert(Map<String, Object> data) {
+<<<<<<< HEAD
 		dao.carkeywordInsert(data);
+=======
+		dao.keywordInsert(data);
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 	}
 
 	public Map<String, ArrayList<CarInfoDTO>> getkeywordCarList() {
@@ -54,6 +58,7 @@ public class KeywordService {
 		return dao.getkeywordList();
 	}
 
+<<<<<<< HEAD
 	public void keywordDelete(HashMap<String, Object> data) {
 		dao.keywordDelete(data);
 		
@@ -68,6 +73,8 @@ public class KeywordService {
 		dao.keywordUpdate(data);
 	}
 
+=======
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 
 	
 

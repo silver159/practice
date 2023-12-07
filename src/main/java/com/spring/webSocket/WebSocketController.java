@@ -28,16 +28,28 @@ public class WebSocketController {
 	private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
 	
 	@Autowired
+<<<<<<< HEAD
 	chatService service;
 	
 	// 채팅방 메시지 목록 불러오기
 	@RequestMapping(value = "/webSocket/messageList.do", method = RequestMethod.GET)
 	public void messageList(HttpServletResponse response, chatDTO dto) throws JsonIOException, IOException {
+=======
+	public chatService service;
+	
+	// 채팅방 메시지 목록 불러오기
+	@RequestMapping(value = "/webSocket/messageList.do", method = RequestMethod.GET)
+	public void messageList(HttpServletResponse response, String id) throws JsonIOException, IOException {
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		logger.info("UserWebsocketController의 messageList()");
 		Gson gson = new GsonBuilder().create();
 		
 		// chatList 가져오기		
+<<<<<<< HEAD
 		List<chatDTO> list = service.chatList(dto);
+=======
+		List<chatList> list = service.chatList(id);
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		
 		response.setContentType("applicaion/json; charset=UTF-8");
 		// json 문자열로 변환

@@ -23,7 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+<<<<<<< HEAD
 import com.mysql.cj.x.protobuf.MysqlxExpect.Open.Condition.Key;
+=======
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 import com.spring.common.paging;
 import com.spring.dto.CarDTO;
 import com.spring.dto.CarInfoDTO;
@@ -52,11 +55,18 @@ public class adminKeywordController {
 	
 	
 	@RequestMapping(value = "/admin/keyword", method = RequestMethod.GET)
+<<<<<<< HEAD
 	public String adminKeyword(Model model) {
 		
 		ArrayList<KeywordDTO> keywordList = service.getkeywordList();
 		
 		model.addAttribute("keywordList", keywordList);
+=======
+	public String adminQuestion(Model model) {
+		
+		
+		
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		return "admin/keyword";
 	}
 	
@@ -89,6 +99,7 @@ public class adminKeywordController {
 		return map;
 	}
 	
+<<<<<<< HEAD
 //	키워드 삭제
 	@RequestMapping(value = "/admin/keywordDelete", method = RequestMethod.POST)
 	@ResponseBody
@@ -143,3 +154,6 @@ public class adminKeywordController {
 
 
 
+=======
+}
+>>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
