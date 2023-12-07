@@ -34,7 +34,6 @@ fetch("/test/adminkeyword/keywordOpstion", {
 
 
 $(() => {
-<<<<<<< HEAD
 //	전체 체크박스 클릭
 	$('#allCheck').click((context) => {
 		var target_is = $(context.currentTarget).prop('checked');
@@ -56,15 +55,6 @@ $(() => {
 		if (!checkBox.prop('checked')) {
 			$("#allCheck").prop("checked", false);
 		}
-=======
-
-//	리스트 클릭시 car_idx 가져옴
-	$('.list-item').click((context) => {
-		var tr_target = $(context.currentTarget);
-
-		var checkBox = tr_target.find('.check');
-		checkBox.prop('checked',!checkBox.prop('checked'));
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		
 	});
 
@@ -417,11 +407,7 @@ $(() => {
 		})
 		
 		const url = "/test/admin/carDelete";
-<<<<<<< HEAD
 		
-=======
-		// 데이터 조회
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		fetch(url, {
 			method: "POST",
 			headers: {
@@ -585,13 +571,3 @@ $('#summary_btn').click(() => {
 	
 });
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d

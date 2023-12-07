@@ -29,11 +29,7 @@
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 	<script type="text/javascript" src="<%= request.getContextPath()%>/js/index.js" defer="defer"></script> 
-<<<<<<< HEAD
 	
-=======
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 	
 	<style type="text/css">
 		
@@ -290,11 +286,7 @@
 						<div class="mb-2">
 							<!-- 키워드 차량리스트 제목 -->
 							<h4 class="my-4 d-flex justify-content-center">${keywordTitle.get(list)}</h4>
-<<<<<<< HEAD
 							<div id="keyword_wrap_${loopStatus.index}" class="autoplay d-flex align-items-center" style="width: 80%;"><!-- 840px -->
-=======
-							<div id="keyword_wrap_${loopStatus.index}" class="autoplay d-flex align-items-center" style="width: 840px;"><!-- 450 -->
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 				    		
 					    	<c:forEach items="${keywordCarList.get(list)}" var="car">
 		    		<!-- 입고 된 차량 -->
@@ -303,11 +295,7 @@
 					    		
 						    	<div style="margin: 0 20px; position: relative;">
 						    		<input class="car_idx" type="hidden" value="${car.car_idx}">
-<<<<<<< HEAD
 									<img class="keyword_img active_img" src="/upload/${car.image}" style="width:100%; height: 220px;">
-=======
-									<img class="keyword_img active_img" src="/upload/${car.image}" style="width:390px; height: 220px; ">
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 									<span class="d-flex justify-content-center align-items-center">
 										<img style="width: 75px; height: 50px; display: inline-block;" src="/test/images/logo/${car.maker}.png"/>
 										<h4 style="margin-left: 10px">${car.model} ${car.series}</h4>
@@ -321,11 +309,7 @@
 					    		
 						    	<div style="margin: 0 20px;">
 						    		<div style="position: relative;">
-<<<<<<< HEAD
 										<img class="keyword_img" src="/upload/${car.image}" style="width:100%; height: 220px; filter: grayscale(100%);">
-=======
-										<img class="keyword_img" src="/upload/${car.image}" style="width:390px; height: 220px; filter: grayscale(100%);">
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 										<h2 class="text-danger top-50 start-50 translate-middle" style="position: absolute;">예약마감</h2>
 						    		</div>
 									<span class="d-flex justify-content-center align-items-center">
@@ -403,11 +387,7 @@
 		</div>
 		
 		
-<<<<<<< HEAD
 				<!-- 채팅 관련 -->
-=======
-		<!-- 채팅 관련 -->
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		<img id="openModalButton" src="${pageContext.request.contextPath}/images/chat-icon.png" alt="Click Image" class="img-fluid fixed-image" data-memberID="${memberID}">
 	
 		<!-- 모달 시작 -->

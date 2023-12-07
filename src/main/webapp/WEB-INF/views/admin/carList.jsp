@@ -10,11 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<<<<<<< HEAD
 <title>차량관리</title>
-=======
-<title>Insert title here</title>
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 	<!-- Favicon-->
 	<link rel="icon" type="image/x-icon" href="<%= request.getContextPath()%>/img/favicon.ico" />
 	<!-- Custom styles for this template -->
@@ -47,14 +43,10 @@
 	#carInsert_form input[type="checkbox"]{
 	}
 	
-<<<<<<< HEAD
 	</style>
 	<script type="text/javascript">
 	
 	</script>
-=======
-	</style>	
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		
 </head>
 <body id="page-top">

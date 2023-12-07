@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.dao.KeywordDAO">
-<<<<<<< HEAD
 	
 	
 	<!-- 차량에 키워드 등록 ( mapping table insert ) -->
 	<insert id="carkeywordInsert" parameterType="hashmap">
-=======
-
-	<select id="keywordOpstion">
-		select name from tb_keyword
-	</select>
-	
-	<insert id="keywordInsert" parameterType="hashmap">
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 		INSERT INTO tb_carkeyword(carinfo_idx, keyword_idx)
 			VALUES
 			<foreach collection="name" item="item" separator=",">
@@ -21,7 +12,6 @@
 				(#{carinfo_idx} , (SELECT keyword_idx FROM tb_keyword WHERE NAME = #{item}))
 			
 			</foreach>
-<<<<<<< HEAD
 	</insert>
 	
 	<!-- 키워드 생성 -->
@@ -53,11 +43,6 @@
 	<select id="keywordOpstion">
 		select name from tb_keyword
 	</select>
-=======
-	
-	</insert>
-	
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 	
 	<select id="getkeywordCarList" parameterType="String" resultType="com.spring.dto.CarDTO">
 		SELECT * FROM tb_car car
@@ -76,13 +61,6 @@
 		
 	</select>
 	
-<<<<<<< HEAD
-=======
-	<select id="getkeywordList">
-		SELECT * FROM tb_keyword
-	</select>
-	
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 </mapper>
 
 

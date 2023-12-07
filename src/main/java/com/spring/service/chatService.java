@@ -17,7 +17,6 @@ public class chatService {
 	private static final Logger logger = LoggerFactory.getLogger(chatService.class);
 	
 	@Autowired
-<<<<<<< HEAD
 	chatDAO dao;
 	
 
@@ -27,23 +26,11 @@ public class chatService {
 //		System.out.println(chatList);
 		return chatList;
 	}
-=======
-	private chatDAO dao;
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 	
 	public boolean insertChat(chatDTO chat) {
 		
 		logger.info("chatService의 insertChat()");
 		return dao.insertChat(chat);
 	}
-<<<<<<< HEAD
-=======
-
-	public List<chatList> chatList(String id) {
-		
-		logger.info("chatService의 chatList()");
-		return dao.chatList(id);
-	}
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 	
 }

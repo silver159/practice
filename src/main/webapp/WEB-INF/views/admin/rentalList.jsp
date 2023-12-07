@@ -148,10 +148,6 @@
 	                    	<table class="table table-striped table-hover">
 				            	<thead class="table-dark">
 				            		<tr class="text-center">
-<<<<<<< HEAD
-=======
-				            			<th><input type="checkbox" id="allCheck"/></th>
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 				            			<th>차량번호</th>
 				            			<th>브랜드</th>
 				            			<th>차량</th>
@@ -167,10 +163,6 @@
 				            	<tbody id="list-item" class="table-group-divider">
 				            		<c:forEach var="list" items="${rentalList}">
 				            		<tr class="text-center">
-<<<<<<< HEAD
-=======
-				            			<td><input type="checkbox" class="check" value="${list.car_idx}"/></td>
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 				            			<td>${list.carNumber}</td>
 				            			<td class="${list.maker}">${list.maker}</td>
 										<td>${list.model} ${list.series}</td>

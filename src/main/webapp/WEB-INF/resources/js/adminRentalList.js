@@ -134,10 +134,6 @@ $(() => {
 				$.each(rentalList, (index, rental) => {
 					rental_print +=
 						'<tr class="text-center list-item">' +
-<<<<<<< HEAD
-=======
-							'<td><input type="checkbox" class="check" value="' + rental.car_idx + '"/></td>' +
->>>>>>> 1767c68b4d55deb42bf382b31ea9e065f6b4b58d
 							'<td>' + rental.carNumber + '</td>' +
 							'<td class="' +rental.maker+ '">' + rental.maker + '</td>' +
 							'<td>' + rental.model + ' ' + rental.series + '</td>' +
