@@ -34,29 +34,33 @@ public class WebSocketController {
 	@RequestMapping(value = "/webSocket/messageList.do", method = RequestMethod.GET)
 	public void messageList(HttpServletResponse response, chatDTO dto) throws JsonIOException, IOException {
 		logger.info("UserWebsocketController의 messageList()");
+		
 		Gson gson = new GsonBuilder().create();
 		
-		// chatList 가져오기		
-		List<chatDTO> list = service.chatList(dto);
-		
-		response.setContentType("applicaion/json; charset=UTF-8");
-		// json 문자열로 변환
-		gson.toJson(list, response.getWriter());
+		if(!dto.getId().equals("비로그인")) {
+			// chatList 가져오기		
+			List<chatDTO> list = service.chatList(dto);
+			response.setContentType("applicaion/json; charset=UTF-8");
+			// json 문자열로 변환
+			gson.toJson(list, response.getWriter());
+		}
 	}
 	
 	@RequestMapping(value = "/webSocket/insertChat.do", method = RequestMethod.GET)
 	@ResponseBody
 	public void insertChat(HttpServletResponse response, @RequestParam String id, @RequestParam String message, @RequestParam String room_id) throws JsonIOException, IOException {
 		logger.info("UserWebsocketController의 insertChat()");
-		logger.info(id);
 		logger.info(message);
-		logger.info(room_id);
 		
-		chatDTO chat = new chatDTO();
-		chat.setId(id);
-		chat.setMessage(message);
-		chat.setRoom_id(room_id);
-		service.insertChat(chat);
+		if(!"비로그인".equals(id)) {
+			logger.info(id);
+			logger.info(room_id);
+			chatDTO chat = new chatDTO();
+			chat.setId(id);
+			chat.setMessage(message);
+			chat.setRoom_id(room_id);
+			service.insertChat(chat);
+		}
 		
 		Gson gson = new GsonBuilder().create();
 		response.setContentType("applicaion/json; charset=UTF-8");

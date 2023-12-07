@@ -1,5 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +30,6 @@
 	<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 	<script type="text/javascript" src="<%= request.getContextPath()%>/js/index.js" defer="defer"></script> 
 	
-	
 	<style type="text/css">
 		
 		#rental-box {
@@ -40,7 +39,6 @@
 			top: 300px;
 			 */
 	    	width: 420px;
-	    	
 	    }
 	    
 	    
@@ -465,7 +463,7 @@
 		
 		// 웹 소켓 객체를 전역으로 선언
 		var webSocket;
-		var memberID = "${memberID}";
+		var memberID = "${memberID}" || "비로그인";
 		
 		// "문의하기" 버튼 클릭 시 이벤트
 	    $('#inquiryButton').on('click', function () {
@@ -478,7 +476,7 @@
 		document.getElementById('openModalButton').addEventListener('click',function() {
 			
 			// 허용된 채팅 시간대 설정
-			const chatStart = 9;
+			const chatStart = 0;
 			const chatEnd = 24;
 			
 			// 현재 시간을 가져온다.
@@ -523,20 +521,23 @@
 		    webSocket = new WebSocket(
 		        "ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/broadsocket"
 		    );
+
 		    // 텍스트 영역
 		    var messageTextArea = document.getElementById("messageTextArea");
 			
 		 	// 텍스트 입력 가져오기
 		    var textMessageInput = document.getElementById("textMessage");
 		    
+		 	
 		    // 접속이 완료되면
 		    webSocket.onopen = function (message) {
 		        console.log("WebSocket 연결이 열렸습니다.");
 				// 채팅방의 메시지 목록 불러오기
+			    
 				$.ajax({
 					url: "${pageContext.request.contextPath}/webSocket/messageList.do",
 					data: {
-						id : "${memberID}"
+						id : memberID
 					},
 					async: true,
 					dataType: "json",
@@ -554,7 +555,7 @@
 			function CheckLR(index,item) {
 				console.log(item.id)
 				// email이 loginSession의 email과 다르면 왼쪽, 같으면 오른쪽
-				const LR = (item.id != "${memberID}") ? "left" : "right";
+				const LR = (item.id != memberID) ? "left" : "right";
 			
 				// 메세지 추가
 				displayMessage(item.message, LR, item.message_regdate);		
@@ -608,8 +609,8 @@
 				$.ajax({
 					url: "${pageContext.request.contextPath}/webSocket/insertChat.do",
 					data: {
-						id : "${memberID}",
-						room_id : "${memberID}",
+						id : memberID,
+						room_id : memberID,
 						message : message.value
 					},
 					async: true,

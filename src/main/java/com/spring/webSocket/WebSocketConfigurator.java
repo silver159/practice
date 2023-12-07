@@ -13,6 +13,10 @@ public class WebSocketConfigurator extends ServerEndpointConfig.Configurator {
         
         // HttpSession을 가져와서 원하는 데이터를 세션에 저장
         HttpSession httpSession = (HttpSession) request.getHttpSession();
-        sec.getUserProperties().put("memberID", httpSession.getAttribute("memberID"));
+        String memberID = (String) httpSession.getAttribute("memberID");
+        if (memberID == null || memberID.isEmpty()) {
+            memberID = "비로그인";
+        }
+        sec.getUserProperties().put("memberID", memberID);
     }
 }
